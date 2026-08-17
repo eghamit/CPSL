@@ -188,7 +188,75 @@
 			\item \textbf{Memory} temporarily holds data \& instructions the CPU is working on.
 		\end{itemize}
 	\end{frame}
-	
+
+	\begin{frame}{How the CPU Runs a Program: The Machine Cycle}
+		\begin{block}{The Fetch--Decode--Execute cycle}
+			To run a program, the CPU repeats one basic cycle --- called the
+			\textbf{machine cycle} (or \textbf{instruction cycle}) --- once for \emph{every}
+			instruction, billions of times per second.
+		\end{block}
+		\begin{columns}[T]
+			\begin{column}{0.58\textwidth}
+				\begin{enumerate}\small
+					\item \textbf{Fetch} --- the Control Unit copies the next instruction from
+					\textbf{memory}. The \emph{Program Counter} (PC) holds its address; the
+					instruction is placed in the \emph{Instruction Register} (IR).
+					\item \textbf{Decode} --- the Control Unit works out \emph{what} the
+					instruction means and which parts of the CPU are needed.
+					\item \textbf{Execute} --- the instruction is carried out: the \textbf{ALU}
+					does the arithmetic/logic, or data is moved. The PC then advances, and
+					the cycle repeats for the next instruction.
+				\end{enumerate}
+			\end{column}
+			\begin{column}{0.42\textwidth}
+				\centering
+				\begin{tikzpicture}[scale=0.7, transform shape,
+					every node/.style={font=\scriptsize}, node distance=0.5cm]
+					\node[startstop] (start) {Start};
+					\node[io, below=of start, fill=cOrange!20] (fetch) {Fetch};
+					\node[process, below=of fetch, fill=blue!10, minimum width=2cm, text width=2cm] (decode) {Decode};
+					\node[process, below=of decode, fill=cGreen!14, minimum width=2cm, text width=2cm] (exec) {Execute};
+					\node[decision, below=0.65cm of exec] (halt) {HALT?};
+					\node[startstop, below=0.65cm of halt] (stop) {Stop};
+					\draw[flowarrow] (start) -- (fetch);
+					\draw[flowarrow] (fetch) -- (decode);
+					\draw[flowarrow] (decode) -- (exec);
+					\draw[flowarrow] (exec) -- (halt);
+					\draw[flowarrow] (halt) -- node[right,font=\tiny]{yes} (stop);
+					\draw[flowarrow] (halt.east) -- ++(0.7,0)
+					node[midway,above,font=\tiny]{no} |- (fetch.east);
+					\node[font=\tiny, cAccent, right=1.4cm of decode] {PC advances};
+				\end{tikzpicture}
+			\end{column}
+		\end{columns}
+	\end{frame}
+
+	\begin{frame}[fragile]{The Machine Cycle: A Worked Example}
+		\begin{block}{Running \texttt{c = a + b} on the CPU}
+			A single C line becomes a few machine instructions. The CPU runs each one
+			through its own \textbf{Fetch--Decode--Execute} cycle.
+		\end{block}
+		\renewcommand{\arraystretch}{1.35}
+		\centering
+		{\small
+		\begin{tabular}{@{}c l p{4.4cm} p{4.7cm}@{}}
+			\toprule
+			\textbf{\#} & \textbf{Instruction} & \textbf{Fetch \& Decode} & \textbf{Execute} \\
+			\midrule
+			1 & \texttt{LOAD a}  & get ``\texttt{LOAD a}'', CU sees a load   & copy \texttt{a} from memory into a register \\
+			2 & \texttt{ADD b}   & get ``\texttt{ADD b}'', CU sees an add    & ALU adds \texttt{b} to that register \\
+			3 & \texttt{STORE c} & get ``\texttt{STORE c}'', CU sees a store & write the result into \texttt{c} in memory \\
+			4 & \texttt{HALT}    & get ``\texttt{HALT}''                     & stop the cycle \\
+			\bottomrule
+		\end{tabular}}
+		\vspace{0.3cm}
+		\begin{itemize}\small
+			\item After each instruction the \textbf{Program Counter} moves on, so the CPU
+			automatically fetches the next one.
+			\item The whole program is just this tiny cycle, repeated very fast.
+		\end{itemize}
+	\end{frame}
+
 	\begin{frame}{Hardware vs.\ Software \& Types of Memory}
 		\begin{columns}[T]
 			\begin{column}{0.5\textwidth}
