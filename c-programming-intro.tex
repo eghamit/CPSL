@@ -110,12 +110,13 @@
 
 %------------------------------------------------
 \begin{frame}{Outline}
+    \small
     \begin{columns}[T]
         \begin{column}{0.5\textwidth}
-            \tableofcontents[hideallsubsections, sections={1-6}]
+            \tableofcontents[hideallsubsections, sections={1-7}]
         \end{column}
         \begin{column}{0.5\textwidth}
-            \tableofcontents[hideallsubsections, sections={7-12}]
+            \tableofcontents[hideallsubsections, sections={8-13}]
         \end{column}
     \end{columns}
 \end{frame}
@@ -477,36 +478,6 @@
     \end{tabular}}
 \end{frame}
 
-\begin{frame}[fragile]{Your First C Program}
-\begin{lstlisting}
-#include <stdio.h>          /* bring in input/output library */
-
-int main(void)              /* execution starts here */
-{
-    printf("Hello, World!\n");   /* print a message */
-    return 0;                    /* 0 = success */
-}
-\end{lstlisting}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \begin{itemize}\small
-                \item \texttt{\#include <stdio.h>} --- loads printf/scanf.
-                \item \texttt{int main(void)} --- every C program starts in \texttt{main}.
-                \item \texttt{\{ \dots \}} --- the body of the function.
-            \end{itemize}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \begin{itemize}\small
-                \item \texttt{printf(\dots)} --- prints text; \texttt{\textbackslash n} = new line.
-                \item Every statement ends with a \textbf{semicolon} \texttt{;}
-                \item \texttt{return 0;} --- tells the OS all went well.
-            \end{itemize}
-        \end{column}
-    \end{columns}
-    \vspace{0.15cm}
-    \centering\footnotesize\textbf{Output:}\; \fbox{\texttt{Hello, World!}}
-\end{frame}
-
 % =================================================================
 \section{Structured Programming: Algorithms \& Pseudo-code}
 % =================================================================
@@ -654,6 +625,122 @@ END
 \end{frame}
 
 % =================================================================
+\section{Anatomy of a C Program}
+% =================================================================
+\begin{frame}[fragile]{The Skeleton of Every C Program}
+    \begin{columns}[T]
+        \begin{column}{0.54\textwidth}
+\begin{lstlisting}
+#include <stdio.h>   /* 1: header */
+
+int main(void)       /* 2: start  */
+{                    /* 3: body   */
+    /* your statements go here */
+
+    return 0;        /* 4: exit   */
+}
+\end{lstlisting}
+        \end{column}
+        \begin{column}{0.46\textwidth}
+            \begin{enumerate}\small
+                \item \textbf{Preprocessor directive} --- \texttt{\#include} pulls in a library (here \texttt{stdio.h} for input/output).
+                \item \textbf{\texttt{main()}} --- execution always begins here; every program has exactly one.
+                \item \textbf{Body} --- the statements between \texttt{\{ \}}; each ends with a semicolon \texttt{;}
+                \item \textbf{\texttt{return 0;}} --- tells the OS the program finished successfully.
+            \end{enumerate}
+            \footnotesize Learn this shape first --- every program we write just fills in the body.
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{The C Character Set and Tokens}
+    \begin{columns}[T]
+        \begin{column}{0.44\textwidth}
+            \begin{block}{Character set}
+                The symbols C understands:
+                \begin{itemize}\small
+                    \item Letters \texttt{A--Z}, \texttt{a--z}
+                    \item Digits \texttt{0--9}
+                    \item Special symbols \texttt{+ - * / = \% ; , \dots}
+                    \item Whitespace (space, tab, newline)
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.56\textwidth}
+            \begin{block}{Tokens --- the smallest units}
+                Characters group into \textbf{tokens}:
+            \end{block}
+            \centering
+            \begin{tikzpicture}[every node/.style={font=\scriptsize, align=center},
+                tk/.style={rectangle, draw=black, rounded corners, fill=blue!8, minimum height=0.55cm, inner sep=2pt}]
+                \node[tk] (a){Keywords\\ \texttt{int}};
+                \node[tk, right=0.15cm of a] (b){Identifiers\\ \texttt{sum}};
+                \node[tk, right=0.15cm of b] (c){Constants\\ \texttt{42}};
+                \node[tk, below=0.2cm of a] (d){Strings\\ \texttt{"Hi"}};
+                \node[tk, right=0.15cm of d] (e){Operators\\ \texttt{+ =}};
+                \node[tk, right=0.15cm of e] (f){Symbols\\ \texttt{; \{ \}}};
+            \end{tikzpicture}
+            \vspace{0.15cm}
+
+            \footnotesize A compiler first breaks your code into these tokens.
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Keywords: C's Reserved Words}
+    \begin{block}{What is a keyword?}
+        A \textbf{keyword} has a fixed, special meaning in C. There are \textbf{32} of them --- you
+        cannot use them as your own names. C is \textbf{case-sensitive}: \texttt{int} is a keyword, \texttt{INT} is not.
+    \end{block}
+    \renewcommand{\arraystretch}{1.3}
+    \centering\ttfamily\small
+    \begin{tabular}{@{}llllllll@{}}
+        auto & break & case & char & const & continue & default & do \\
+        double & else & enum & extern & float & for & goto & if \\
+        int & long & register & return & short & signed & sizeof & static \\
+        struct & switch & typedef & union & unsigned & void & volatile & while \\
+    \end{tabular}
+
+    \vspace{0.25cm}
+    \normalfont\footnotesize The ones we use most as beginners: \texttt{int}, \texttt{float}, \texttt{char}, \texttt{if}, \texttt{else}, \texttt{for}, \texttt{while}, \texttt{return}.
+\end{frame}
+
+\begin{frame}{Identifiers: Naming Your Variables}
+    \begin{block}{Identifier}
+        The \textbf{name} you give to a variable, function, or constant.
+    \end{block}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \textbf{Rules}
+            \begin{itemize}\small
+                \item Use letters, digits, and underscore \texttt{\_}.
+                \item Must \emph{start} with a letter or \texttt{\_} (not a digit).
+                \item No spaces and no special symbols.
+                \item Cannot be a keyword.
+                \item Case-sensitive: \texttt{age} $\neq$ \texttt{Age}.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \renewcommand{\arraystretch}{1.25}
+            \centering
+            \begin{tabular}{@{}ll@{}}
+                \toprule
+                \textbf{Valid} & \textbf{Invalid} \\
+                \midrule
+                \texttt{total}    & \texttt{2sum} (starts with digit) \\
+                \texttt{marks1}   & \texttt{my age} (has a space) \\
+                \texttt{\_count}  & \texttt{float} (keyword) \\
+                \texttt{avgScore} & \texttt{rate\%} (bad symbol) \\
+                \bottomrule
+            \end{tabular}
+            \vspace{0.15cm}
+
+            \footnotesize Tip: choose \emph{meaningful} names like \texttt{total}, not \texttt{t}.
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% =================================================================
 \section{The C Standard Library}
 % =================================================================
 \begin{frame}{The C Standard Library}
@@ -723,6 +810,38 @@ END
             \begin{block}{A character is a small number}
                 \small \texttt{'A'} is stored as the integer \texttt{65} (its ASCII code).
             \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Size and Range of Each Variable}
+    \begin{block}{Every type occupies a fixed amount of memory}
+        The \textbf{size} (in bytes) decides the \textbf{range} of values a variable can hold. Sizes are typical for a modern computer.
+    \end{block}
+    \renewcommand{\arraystretch}{1.25}
+    \centering
+    \begin{tabular}{@{}lccll@{}}
+        \toprule
+        \textbf{Type} & \textbf{Size} & \textbf{Bits} & \textbf{Approx.\ range} & \textbf{Specifier} \\
+        \midrule
+        \texttt{char}   & 1 byte & 8  & $-128$ to $127$                & \texttt{\%c} \\
+        \texttt{int}    & 4 bytes & 32 & $-2.1\times10^{9}$ to $2.1\times10^{9}$ & \texttt{\%d} \\
+        \texttt{float}  & 4 bytes & 32 & $\sim$6--7 significant digits  & \texttt{\%f} \\
+        \texttt{double} & 8 bytes & 64 & $\sim$15 significant digits    & \texttt{\%lf} \\
+        \bottomrule
+    \end{tabular}
+    \vspace{0.2cm}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \begin{block}{Find the size yourself}
+                \small The \texttt{sizeof} operator returns a type's size in bytes:
+            \end{block}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+\begin{lstlisting}
+printf("%d", sizeof(int));
+// prints 4
+\end{lstlisting}
         \end{column}
     \end{columns}
 \end{frame}
@@ -939,6 +1058,84 @@ a >> 1;  // 0010 = 2  (/2)
 \end{frame}
 
 % =================================================================
+\section{Input and Output in C}
+% =================================================================
+\begin{frame}{Classification of I/O Functions}
+    \centering
+    \begin{tikzpicture}[every node/.style={font=\footnotesize},
+        hdr/.style={rectangle, draw=black, thick, rounded corners, minimum width=3.2cm, minimum height=0.7cm, align=center, font=\bfseries\footnotesize, fill=cAccent!20},
+        grp/.style={rectangle, draw=black, minimum width=3.4cm, align=center, fill=blue!6}]
+        \node[hdr] (io) {I / O Functions};
+        \node[hdr, below left=1.1cm and 0.6cm of io, fill=cGreen!18] (fmt) {Formatted};
+        \node[hdr, below right=1.1cm and 0.6cm of io, fill=cOrange!20] (unf) {Unformatted};
+        \draw[flowarrow] (io.south) -- ++(0,-0.35) -| (fmt.north);
+        \draw[flowarrow] (io.south) -- ++(0,-0.35) -| (unf.north);
+        \node[grp, below=0.4cm of fmt, text width=3.2cm] (fmtc)
+            {\textbf{Input:} \texttt{scanf}, \texttt{fscanf}\\ \textbf{Output:} \texttt{printf}, \texttt{fprintf}};
+        \node[grp, below=0.4cm of unf, text width=3.6cm] (unfc)
+            {\textbf{Input:} \texttt{getchar}, \texttt{gets}, \texttt{getch}\\ \textbf{Output:} \texttt{putchar}, \texttt{puts}};
+        \draw[flowarrow] (fmt) -- (fmtc);
+        \draw[flowarrow] (unf) -- (unfc);
+    \end{tikzpicture}
+    \vspace{0.2cm}
+    \begin{itemize}\small
+        \item \textbf{Formatted} functions use \emph{format specifiers} (\texttt{\%d}, \texttt{\%f}, \dots) to control layout --- our focus.
+        \item \textbf{Unformatted} functions read/write raw characters or strings without formatting.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Output with \texttt{printf} --- Format Specifiers}
+    \renewcommand{\arraystretch}{1.3}
+    \centering
+    \begin{tabular}{@{}cll@{}}
+        \toprule
+        \textbf{Specifier} & \textbf{Used for} & \textbf{Example} \\
+        \midrule
+        \texttt{\%d} & integer               & \texttt{printf("\%d", 42);} $\rightarrow$ \texttt{42} \\
+        \texttt{\%f} & float / double        & \texttt{printf("\%f", 3.14);} $\rightarrow$ \texttt{3.140000} \\
+        \texttt{\%c} & single character      & \texttt{printf("\%c", 'A');} $\rightarrow$ \texttt{A} \\
+        \texttt{\%s} & string (text)         & \texttt{printf("\%s", "Hi");} $\rightarrow$ \texttt{Hi} \\
+        \bottomrule
+    \end{tabular}
+    \vspace{0.3cm}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \begin{block}{Width \& precision}
+                \small
+                \texttt{\%5d} --- at least 5 columns wide.\\
+                \texttt{\%.2f} --- 2 digits after the point.\\
+                \texttt{printf("\%.2f", 3.14159);} $\rightarrow$ \texttt{3.14}
+            \end{block}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{block}{Escape sequences}
+                \small
+                \texttt{\textbackslash n} new line \quad \texttt{\textbackslash t} tab \\
+                \texttt{\textbackslash\textbackslash} backslash \quad \texttt{\textbackslash"} quote
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Input with \texttt{scanf}}
+\begin{lstlisting}
+int age;
+printf("Enter your age: ");
+scanf("%d", &age);          /* note the & (address of age) */
+printf("Next year you will be %d\n", age + 1);
+\end{lstlisting}
+    \begin{itemize}\small
+        \item \texttt{scanf} reads typed input and stores it in a variable.
+        \item \textbf{Crucial:} put an \texttt{\&} (``address of'') before the variable --- \texttt{\&age}.
+        \item The specifier must match the type: \texttt{\%d} int, \texttt{\%f} float, \texttt{\%c} char, \texttt{\%s} string.
+    \end{itemize}
+    \begin{block}{Reading several values}
+        \small \texttt{scanf("\%d \%f", \&n, \&x);} reads an integer then a float.
+    \end{block}
+    \centering\footnotesize\textbf{Sample run:}\; \fbox{\texttt{Enter your age: 20}} $\rightarrow$ \fbox{\texttt{Next year you will be 21}}
+\end{frame}
+
+% =================================================================
 \section{Control Structures}
 % =================================================================
 \begin{frame}[fragile]{Making Decisions: \texttt{if} / \texttt{if-else}}
@@ -1113,129 +1310,136 @@ for (i = 1; i <= 5; i++) {
 \end{frame}
 
 % =================================================================
-\section{Formatted Input and Output}
+\section{Writing Your First C Programs}
 % =================================================================
-\begin{frame}{Classification of I/O Functions}
-    \centering
-    \begin{tikzpicture}[every node/.style={font=\footnotesize},
-        hdr/.style={rectangle, draw=black, thick, rounded corners, minimum width=3.2cm, minimum height=0.7cm, align=center, font=\bfseries\footnotesize, fill=cAccent!20},
-        grp/.style={rectangle, draw=black, minimum width=3.4cm, align=center, fill=blue!6}]
-        \node[hdr] (io) {I / O Functions};
-        \node[hdr, below left=1.1cm and 0.6cm of io, fill=cGreen!18] (fmt) {Formatted};
-        \node[hdr, below right=1.1cm and 0.6cm of io, fill=cOrange!20] (unf) {Unformatted};
-        \draw[flowarrow] (io.south) -- ++(0,-0.35) -| (fmt.north);
-        \draw[flowarrow] (io.south) -- ++(0,-0.35) -| (unf.north);
-        \node[grp, below=0.4cm of fmt, text width=3.2cm] (fmtc)
-            {\textbf{Input:} \texttt{scanf}, \texttt{fscanf}\\ \textbf{Output:} \texttt{printf}, \texttt{fprintf}};
-        \node[grp, below=0.4cm of unf, text width=3.6cm] (unfc)
-            {\textbf{Input:} \texttt{getchar}, \texttt{gets}, \texttt{getch}\\ \textbf{Output:} \texttt{putchar}, \texttt{puts}};
-        \draw[flowarrow] (fmt) -- (fmtc);
-        \draw[flowarrow] (unf) -- (unfc);
-    \end{tikzpicture}
-    \vspace{0.2cm}
-    \begin{itemize}\small
-        \item \textbf{Formatted} functions use \emph{format specifiers} (\texttt{\%d}, \texttt{\%f}, \dots) to control layout --- our focus.
-        \item \textbf{Unformatted} functions read/write raw characters or strings without formatting.
-    \end{itemize}
-\end{frame}
+\begin{frame}[fragile]{Your First C Program: ``Hello, World!''}
+\begin{lstlisting}
+#include <stdio.h>          /* bring in input/output library */
 
-\begin{frame}[fragile]{Output with \texttt{printf} --- Format Specifiers}
-    \renewcommand{\arraystretch}{1.3}
-    \centering
-    \begin{tabular}{@{}cll@{}}
-        \toprule
-        \textbf{Specifier} & \textbf{Used for} & \textbf{Example} \\
-        \midrule
-        \texttt{\%d} & integer               & \texttt{printf("\%d", 42);} $\rightarrow$ \texttt{42} \\
-        \texttt{\%f} & float / double        & \texttt{printf("\%f", 3.14);} $\rightarrow$ \texttt{3.140000} \\
-        \texttt{\%c} & single character      & \texttt{printf("\%c", 'A');} $\rightarrow$ \texttt{A} \\
-        \texttt{\%s} & string (text)         & \texttt{printf("\%s", "Hi");} $\rightarrow$ \texttt{Hi} \\
-        \bottomrule
-    \end{tabular}
-    \vspace{0.3cm}
+int main(void)              /* execution starts here */
+{
+    printf("Hello, World!\n");   /* print a message */
+    return 0;                    /* 0 = success */
+}
+\end{lstlisting}
     \begin{columns}[T]
         \begin{column}{0.5\textwidth}
-            \begin{block}{Width \& precision}
-                \small
-                \texttt{\%5d} --- at least 5 columns wide.\\
-                \texttt{\%.2f} --- 2 digits after the point.\\
-                \texttt{printf("\%.2f", 3.14159);} $\rightarrow$ \texttt{3.14}
-            \end{block}
+            \begin{itemize}\small
+                \item We now know the skeleton, keywords, data types and I/O --- so we can write real programs.
+                \item \texttt{printf} prints text; \texttt{\textbackslash n} starts a new line.
+            \end{itemize}
         \end{column}
         \begin{column}{0.5\textwidth}
-            \begin{block}{Escape sequences}
-                \small
-                \texttt{\textbackslash n} new line \quad \texttt{\textbackslash t} tab \\
-                \texttt{\textbackslash\textbackslash} backslash \quad \texttt{\textbackslash"} quote
-            \end{block}
+            \begin{itemize}\small
+                \item Every statement ends with a semicolon \texttt{;}
+                \item \texttt{return 0;} reports success to the OS.
+            \end{itemize}
         \end{column}
     \end{columns}
+    \vspace{0.1cm}
+    \centering\footnotesize\textbf{Output:}\; \fbox{\texttt{Hello, World!}}
 \end{frame}
 
-\begin{frame}[fragile]{Input with \texttt{scanf}}
-\begin{lstlisting}
-int age;
-printf("Enter your age: ");
-scanf("%d", &age);          /* note the & (address of age) */
-printf("Next year you will be %d\n", age + 1);
-\end{lstlisting}
-    \begin{itemize}\small
-        \item \texttt{scanf} reads typed input and stores it in a variable.
-        \item \textbf{Crucial:} put an \texttt{\&} (``address of'') before the variable --- \texttt{\&age}.
-        \item The specifier must match the type: \texttt{\%d} int, \texttt{\%f} float, \texttt{\%c} char, \texttt{\%s} string.
-    \end{itemize}
-    \begin{block}{Reading several values}
-        \small \texttt{scanf("\%d \%f", \&n, \&x);} reads an integer then a float.
-    \end{block}
-    \centering\footnotesize\textbf{Sample run:}\; \fbox{\texttt{Enter your age: 20}} $\rightarrow$ \fbox{\texttt{Next year you will be 21}}
+\begin{frame}{Worked Example 1: Adding Two Numbers}
+    \centering
+    \resizebox{0.98\textwidth}{!}{%
+    \begin{tikzpicture}[
+        every node/.style={font=\small},
+        cl/.style={anchor=north west, font=\ttfamily\small, inner sep=1.5pt},
+        ann/.style={-{Stealth[length=2mm]}, thick}
+    ]
+        % ---------- FLOWCHART (left) ----------
+        \node[startstop] (start) {START};
+        \node[io, below=0.4cm of start, fill=cOrange!20] (read) {READ a, b};
+        \node[process, below=0.4cm of read, minimum width=2.4cm, text width=2.4cm] (calc) {c = a + b};
+        \node[io, below=0.4cm of calc, fill=cGreen!20] (print) {PRINT c};
+        \node[startstop, below=0.4cm of print] (stop) {STOP};
+        \draw[flowarrow](start)--(read);
+        \draw[flowarrow](read)--(calc);
+        \draw[flowarrow](calc)--(print);
+        \draw[flowarrow](print)--(stop);
+
+        % ---------- CODE (right) ----------
+        \node[cl] (l1) at (5,1.0) {\#include <stdio.h>};
+        \node[cl] (l2) at (l1.south west) {int main(void)};
+        \node[cl] (l3) at (l2.south west) {\{};
+        \node[cl, text=cAccent] (l4) at (l3.south west) {~~~int a, b, c;};
+        \node[cl] (l5) at (l4.south west) {~~~scanf("\%d \%d", \&a, \&b);};
+        \node[cl] (l6) at (l5.south west) {~~~c = a + b;};
+        \node[cl] (l7) at (l6.south west) {~~~printf("\%d", c);};
+        \node[cl] (l8) at (l7.south west) {~~~return 0;};
+        \node[cl] (l9) at (l8.south west) {\}};
+        \begin{scope}[on background layer]
+            \node[draw, thick, rounded corners, fill=magenta!8, fit=(l1)(l9), inner sep=6pt] (box) {};
+        \end{scope}
+
+        % ---------- ANNOTATION ARROWS ----------
+        \draw[ann, blue]    (read.east)  -- (l5.west);
+        \draw[ann, cPurple] (calc.east)  -- (l6.west);
+        \draw[ann, cGreen]  (print.east) -- (l7.west);
+
+        % ---------- CALLOUT ----------
+        \node[draw, fill=white, rounded corners, font=\footnotesize, anchor=west]
+            (vd) at ($(box.east |- l4)+(0.5,0)$) {Variable Declaration};
+        \draw[ann] (vd.west) -- (l4.east);
+    \end{tikzpicture}}
+    \vspace{0.1cm}
+
+    \footnotesize Each flowchart step on the left maps to a coloured line of C code on the right.
 \end{frame}
 
-% =================================================================
-\section{Simple C Programming Examples}
-% =================================================================
-\begin{frame}[fragile]{Example 1 --- Add Two Numbers}
-\begin{lstlisting}
-#include <stdio.h>
+\begin{frame}{Worked Example 2: Even or Odd (\texttt{if--else})}
+    \centering
+    \resizebox{0.86\textwidth}{!}{%
+    \begin{tikzpicture}[
+        every node/.style={font=\small},
+        cl/.style={anchor=north west, font=\ttfamily\small, inner sep=1.5pt},
+        ann/.style={-{Stealth[length=2mm]}, thick}
+    ]
+        % ---------- FLOWCHART (left) ----------
+        \node[startstop] (start) {START};
+        \node[io, below=0.4cm of start, fill=cOrange!20] (read) {READ n};
+        \node[decision, below=0.5cm of read] (dec) {n \% 2 == 0?};
+        \node[process, below left=0.8cm and 0.1cm of dec, fill=cGreen!22] (even) {PRINT EVEN};
+        \node[process, below right=0.8cm and 0.1cm of dec, fill=cRed!20] (odd) {PRINT ODD};
+        \node[startstop, below=2.5cm of dec] (stop) {STOP};
+        \draw[flowarrow](start)--(read);
+        \draw[flowarrow](read)--(dec);
+        \draw[flowarrow](dec.west) -| node[near start, above, font=\scriptsize]{Yes} (even);
+        \draw[flowarrow](dec.east) -| node[near start, above, font=\scriptsize]{No} (odd);
+        \draw[flowarrow](even) |- (stop);
+        \draw[flowarrow](odd) |- (stop);
 
-int main(void)
-{
-    int a, b, sum;
+        % ---------- CODE (right) ----------
+        \node[cl] (l1) at (5.5,1.4) {\#include <stdio.h>};
+        \node[cl] (l2) at (l1.south west) {int main(void)};
+        \node[cl] (l3) at (l2.south west) {\{};
+        \node[cl, text=cAccent] (l4) at (l3.south west) {~~~int n;};
+        \node[cl] (l5) at (l4.south west) {~~~scanf("\%d", \&n);};
+        \node[cl] (l6) at (l5.south west) {~~~if (n \% 2 == 0)};
+        \node[cl, text=cGreen] (l7) at (l6.south west) {~~~~~~printf("EVEN");};
+        \node[cl] (l8) at (l7.south west) {~~~else};
+        \node[cl, text=cRed] (l9) at (l8.south west) {~~~~~~printf("ODD");};
+        \node[cl] (l10) at (l9.south west) {~~~return 0;};
+        \node[cl] (l11) at (l10.south west) {\}};
+        \begin{scope}[on background layer]
+            \node[draw, thick, rounded corners, fill=magenta!8, fit=(l1)(l11), inner sep=6pt] (box) {};
+        \end{scope}
 
-    printf("Enter two integers: ");
-    scanf("%d %d", &a, &b);
+        % ---------- ANNOTATION ARROWS ----------
+        \draw[ann, blue]    (read.east) -- (l5.west);
+        \draw[ann, cPurple] (dec.east)  to[out=0, in=180] (l6.west);
+        % ---------- CALLOUT ----------
+        \node[draw, fill=white, rounded corners, font=\footnotesize, anchor=west]
+            (vd) at ($(box.east |- l4)+(0.5,0)$) {Variable Declaration};
+        \draw[ann] (vd.west) -- (l4.east);
+    \end{tikzpicture}}
+    \vspace{0.05cm}
 
-    sum = a + b;
-    printf("Sum = %d\n", sum);
-
-    return 0;
-}
-\end{lstlisting}
-    \centering\footnotesize
-    \textbf{Run:}\; \fbox{\texttt{Enter two integers: 7 5}} $\rightarrow$ \fbox{\texttt{Sum = 12}}
+    \footnotesize The \textcolor{cGreen}{green} and \textcolor{cRed}{red} branches match the two \texttt{printf} lines. A number is even when \texttt{n \% 2} is \texttt{0}.
 \end{frame}
 
-\begin{frame}[fragile]{Example 2 --- Even or Odd (\texttt{if--else} + \texttt{\%})}
-\begin{lstlisting}
-#include <stdio.h>
-
-int main(void)
-{
-    int n;
-    printf("Enter a number: ");
-    scanf("%d", &n);
-
-    if (n % 2 == 0)
-        printf("%d is Even\n", n);
-    else
-        printf("%d is Odd\n", n);
-
-    return 0;
-}
-\end{lstlisting}
-    \centering\footnotesize \textbf{Idea:} a number is even when \texttt{n \% 2} (the remainder) is \texttt{0}.
-\end{frame}
-
-\begin{frame}[fragile]{Example 3 --- Sum of 1 to N (a \texttt{for} loop)}
+\begin{frame}[fragile]{Worked Example 3 --- Sum of 1 to N (a \texttt{for} loop)}
     \begin{columns}[T]
         \begin{column}{0.62\textwidth}
 \begin{lstlisting}
@@ -1273,7 +1477,7 @@ int main(void)
     \end{columns}
 \end{frame}
 
-\begin{frame}[fragile]{Example 4 --- Simple Calculator (\texttt{switch})}
+\begin{frame}[fragile]{Worked Example 4 --- Simple Calculator (\texttt{switch})}
 \begin{lstlisting}
 #include <stdio.h>
 int main(void) {
