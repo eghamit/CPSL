@@ -293,7 +293,8 @@
 			 &  & \textbf{(add 2 numbers)} \\
 			\midrule
 			Machine   & Very hard (all 0/1)          & \texttt{10110000 01100001} \\
-			Assembly  & Hard (mnemonics)             & \texttt{MOV AL, 61$^\text{H}$}\quad \texttt{ADD AL, BL} \\
+			Assembly  & Hard (mnemonics)             & \texttt{MOV AL, 61$^\text{H}$} \qquad $\texttt{AL} \leftarrow 61^\text{H}$ \\
+			  &               & \texttt{ADD AL, BL} \qquad $\texttt{AL} \leftarrow \texttt{AL} + \texttt{BL}$\\
 			High-level& Easy (English-like)          & \texttt{c = a + b;} \\
 			\bottomrule
 		\end{tabular}
@@ -546,20 +547,20 @@
 			% ---- 1. Sequence ----
 			\begin{column}{0.3\textwidth}
 				\centering \textbf{1. Sequence}\\ \footnotesize(do in order)\\[6pt]
-				\begin{tikzpicture}[font=\scriptsize, node distance=0.5cm]
+				\begin{tikzpicture}[font=\scriptsize, node distance=0.8cm]
 					\node[process, fill=blue!10, minimum width=1.5cm] (s1){Step A};
 					\node[process, fill=blue!10, minimum width=1.5cm, below=of s1] (s2){Step B};
 					\draw[flowarrow](s1)--(s2);
 				\end{tikzpicture}
 			\end{column}
 			% ---- 2. Selection ----
-			\begin{column}{0.4\textwidth}
+			\begin{column}{0.35\textwidth}
 				\centering \textbf{2. Selection}\\ \footnotesize(choose a path)\\[6pt]
 				\begin{tikzpicture}[font=\scriptsize, node distance=0.4cm,
-					dsm/.style={diamond, aspect=1.6, draw=black, fill=cGreen!18, minimum width=1.6cm, inner sep=0pt}]
+					dsm/.style={diamond, aspect=1.6, draw=black, fill=cGreen!18, minimum height=1.3cm, minimum width=1.8cm, inner sep=0pt}]
 					\node[dsm] (d){cond?};
-					\node[process, fill=cGreen!12, below left=0.5cm and 0cm of d, minimum width=0.9cm, text width=0.7cm](y){yes};
-					\node[process, fill=cRed!12, below right=0.5cm and 0cm of d, minimum width=0.9cm, text width=0.6cm](n){no};
+					\node[process, fill=cGreen!12, below left=0.8cm and 0.5cm of d, minimum width=0.9cm, text width=0.7cm](y){yes};
+					\node[process, fill=cRed!12, below right=0.8cm and 0.5cm of d, minimum width=0.9cm, text width=0.6cm](n){no};
 					\draw[flowarrow](d.west) -| (y);
 					\draw[flowarrow](d.east) -| (n);
 				\end{tikzpicture}
@@ -568,9 +569,9 @@
 			\begin{column}{0.28\textwidth}
 				\centering \textbf{3. Repetition}\\ \footnotesize(loop)\\[6pt]
 				\begin{tikzpicture}[font=\scriptsize, node distance=0.5cm,
-					dsm/.style={diamond, aspect=1.6, draw=black, fill=cGreen!18, minimum width=1.6cm, inner sep=0pt}]
+					dsm/.style={diamond, aspect=1.6, draw=black, fill=cGreen!18, minimum height=1.3cm, minimum width=1.8cm, inner sep=0pt}]
 					\node[dsm] (l){cond?};
-					\node[process, fill=cOrange!14, below=0.6cm of l, minimum width=1.3cm](body){body};
+					\node[process, fill=cOrange!14, below=0.8cm of l, minimum width=1.3cm](body){body};
 					\draw[flowarrow](l) -- node[right,font=\tiny]{true} (body);
 					\draw[flowarrow](body.east) -- ++(0.35,0) |- (l.east);
 				\end{tikzpicture}
@@ -599,9 +600,9 @@
 				\end{block}
 				\begin{semiverbatim}\small
 					BEGIN
-						INPUT a, b
-						sum \(\leftarrow\) a + b
-						OUTPUT sum
+								INPUT a, b
+								sum \(\leftarrow\) a + b
+								OUTPUT sum
 					END
 				\end{semiverbatim}
 				\vspace{0.1cm}
