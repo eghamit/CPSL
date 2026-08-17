@@ -42,7 +42,7 @@
 % Beamer colour tweaks (match a Madrid-style accent)
 \setbeamercolor{structure}{fg=cAccent}
 \setbeamertemplate{frametitle continuation}{%
-    \ifnum\insertcontinuationcount>1\space(cont...)\fi
+	\ifnum\insertcontinuationcount>1\space(cont...)\fi
 }
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{caption}[numbered]
@@ -51,1494 +51,2087 @@
 % Listings style for C code
 % -------------------------------------------------
 \lstdefinestyle{cstyle}{
-    language=C,
-    backgroundcolor=\color{codebg},
-    basicstyle=\ttfamily\footnotesize,
-    keywordstyle=\color{codekw}\bfseries,
-    commentstyle=\color{codecomment}\itshape,
-    stringstyle=\color{codestr},
-    numbers=left,
-    numberstyle=\tiny\color{gray},
-    numbersep=8pt,
-    showstringspaces=false,
-    breaklines=true,
-    frame=single,
-    rulecolor=\color{gray!50},
-    tabsize=2,
-    columns=fullflexible,
-    keepspaces=true,
-    literate={~}{{$\sim$}}1
+	language=C,
+	backgroundcolor=\color{codebg},
+	basicstyle=\ttfamily\footnotesize,
+	keywordstyle=\color{codekw}\bfseries,
+	commentstyle=\color{codecomment}\itshape,
+	stringstyle=\color{codestr},
+	numbers=left,
+	numberstyle=\tiny\color{gray},
+	numbersep=8pt,
+	showstringspaces=false,
+	breaklines=true,
+	frame=single,
+	rulecolor=\color{gray!50},
+	tabsize=2,
+	columns=fullflexible,
+	keepspaces=true,
+	literate={~}{{$\sim$}}1
 }
 \lstset{style=cstyle}
 
 % Handy TikZ flowchart node styles
 \tikzset{
-    startstop/.style={rectangle, rounded corners=10pt, minimum width=2.4cm, minimum height=0.8cm, text centered, align=center, draw=black, fill=cAccent!25},
-    process/.style  ={rectangle, minimum width=2.6cm, minimum height=0.8cm, text centered, align=center, text width=2.8cm, draw=black, fill=blue!8},
-    io/.style       ={trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=2.2cm, minimum height=0.8cm, text centered, align=center, draw=black, fill=cOrange!20},
-    decision/.style ={diamond, aspect=2, minimum width=2.4cm, minimum height=0.9cm, text centered, text width=2.2cm, draw=black, fill=cGreen!18, inner sep=1pt},
-    flowarrow/.style={-{Stealth[length=2.5mm]}, thick},
+	startstop/.style={rectangle, rounded corners=10pt, minimum width=2.4cm, minimum height=0.8cm, text centered, align=center, draw=black, fill=cAccent!25},
+	process/.style  ={rectangle, minimum width=2.6cm, minimum height=0.8cm, text centered, align=center, text width=2.8cm, draw=black, fill=blue!8},
+	io/.style       ={trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=2.2cm, minimum height=0.8cm, text centered, align=center, draw=black, fill=cOrange!20},
+	decision/.style ={diamond, aspect=2, minimum width=2.4cm, minimum height=0.9cm, text centered, text width=2.2cm, draw=black, fill=cGreen!18, inner sep=1pt},
+	flowarrow/.style={-{Stealth[length=2.5mm]}, thick},
 }
 
 % -------------------------------------------------
 % Title information
 % -------------------------------------------------
 \title[Programming with C]{Introduction to Computer Programming}
-\subtitle{Fundamentals of C for Complete Beginners}
+\subtitle{Fundamentals of C}
 \author[Amit Kumar Singh]{}
 \institute[]{
-    Amit Kumar Singh \\
-    \vspace{0.1cm}
-    Assistant Professor (ECE) \\
-    \vspace{0.05cm}
-    School of Naval Architecture and Ocean Engineering\\
-    \vspace{0.05cm}
-    Indian Maritime University Visakhapatnam Campus, Sabbavaram Mandal\\
-    \vspace{0.05cm}
-    Visakhapatnam, Andhra Pradesh -- 531~035\\
-    \vspace{0.25cm}
-    amitkumarsingh@imu.ac.in
+	Amit Kumar Singh \\
+	\vspace{0.1cm}
+	Assistant Professor (ECE) \\
+	\vspace{0.05cm}
+	School of Naval Architecture and Ocean Engineering\\
+	\vspace{0.05cm}
+	Indian Maritime University Visakhapatnam Campus, Sabbavaram Mandal\\
+	\vspace{0.05cm}
+	Visakhapatnam, Andhra Pradesh -- 531~035\\
+	\vspace{0.25cm}
+	amitkumarsingh@imu.ac.in
 }
 \date[Programming in C]{\today}
 
 \begin{document}
-
-%------------------------------------------------
-\begin{frame}
-    \titlepage
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}{Outline}
-    \small
-    \begin{columns}[T,onlytextwidth]
-        \hspace{0.8cm}% shift the first column to the right
-        \begin{column}{0.49\textwidth}
-            \tableofcontents[hideallsubsections, sections={1-7}]
-        \end{column}
-        \hspace{0.8cm}% wider gap between the two columns
-        \begin{column}{0.34\textwidth}
-            \tableofcontents[hideallsubsections, sections={8-13}]
-        \end{column}
-    \end{columns}
-\end{frame}
-
-% =================================================================
-\section{Introduction to Computer Organization}
-% =================================================================
-\begin{frame}{What is a Computer?}
-    \begin{block}{Definition}
-        A \textbf{computer} is an electronic machine that accepts \textbf{data} (input),
-        processes it according to a set of \textbf{instructions} (a program), and produces
-        useful \textbf{information} (output).
-    \end{block}
-    \vspace{0.3cm}
-    \begin{columns}
-        \begin{column}{0.6\textwidth}
-            \begin{itemize}
-                \item It follows the simple cycle:
-                \[
-                    \textbf{INPUT} \;\rightarrow\; \textbf{PROCESS} \;\rightarrow\; \textbf{OUTPUT}
-                \]
-                \item It cannot ``think'' --- it only does exactly what the program tells it, very fast and without mistakes.
-                \item \emph{Programming} is the art of writing those instructions.
-            \end{itemize}
-        \end{column}
-        \begin{column}{0.4\textwidth}
-            \centering
-            \begin{tikzpicture}[node distance=0.9cm]
-                \node[io, fill=cOrange!20] (in) {Input};
-                \node[process, below=of in] (proc) {Process (CPU)};
-                \node[io, below=of proc, fill=cGreen!20] (out) {Output};
-                \draw[flowarrow] (in) -- (proc);
-                \draw[flowarrow] (proc) -- (out);
-            \end{tikzpicture}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}{Computer Organization: The Building Blocks}
-    \centering
-    \begin{tikzpicture}[every node/.style={font=\small}, node distance=1.1cm]
-        % Input
-        \node[io, fill=cOrange!25] (input) {Input Unit\\ \tiny(keyboard, mouse)};
-        % CPU box contents
-        \node[process, right=2.2cm of input, fill=blue!12] (cu) {Control Unit (CU)};
-        \node[process, below=0.7cm of cu, fill=blue!12] (alu) {Arithmetic \& Logic Unit (ALU)};
-        % memory
-        \node[process, right=2.2cm of cu, fill=cPurple!15] (mem) {Memory Unit\\ \tiny(RAM / storage)};
-        % output
-        \node[io, below=0.7cm of mem, fill=cGreen!25] (output) {Output Unit\\ \tiny(monitor, printer)};
-
-        % CPU dashed box
-        \begin{scope}[on background layer]
-            \node[draw=cAccent, thick, dashed, rounded corners, fit=(cu)(alu), inner sep=8pt, label={[cAccent]above:\textbf{CPU (Processor)}}] (cpu) {};
-        \end{scope}
-
-        % arrows
-        \draw[flowarrow] (input) -- (cu.west);
-        \draw[flowarrow] (cu) -- (alu);
-        \draw[flowarrow] (cu.east) -- (mem.west);
-        \draw[flowarrow] (mem.east) .. controls +(1,-0.6) and +(1,0.6) .. (output.east);
-        \draw[flowarrow, cAccent] (alu.east) -- ++(0.4,0) |- (output.west);
-    \end{tikzpicture}
-    \vspace{0.2cm}
-    \begin{itemize}\small
-        \item \textbf{CPU} = ``brain''. \textbf{CU} directs traffic; \textbf{ALU} does the maths \& comparisons.
-        \item \textbf{Memory} temporarily holds data \& instructions the CPU is working on.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Hardware vs.\ Software \& Types of Memory}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \begin{block}{Hardware}
-                The physical parts you can \emph{touch} --- CPU, RAM, hard disk, keyboard, monitor.
-            \end{block}
-            \begin{block}{Software}
-                The \emph{programs} (instructions) that tell the hardware what to do --- e.g.\ Windows, a game, a C program.
-            \end{block}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \begin{block}{Primary Memory (fast, temporary)}
-                \begin{itemize}\small
-                    \item \textbf{RAM} --- working memory, lost when power is off (volatile).
-                    \item \textbf{ROM} --- read-only, permanent start-up instructions.
-                \end{itemize}
-            \end{block}
-            \begin{block}{Secondary Memory (slow, permanent)}
-                \begin{itemize}\small
-                    \item Hard disk, SSD, USB drive --- stores files even without power.
-                \end{itemize}
-            \end{block}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-% =================================================================
-\section{Evolution of Operating Systems}
-% =================================================================
-\begin{frame}{What is an Operating System (OS)?}
-    \begin{block}{Operating System}
-        An OS is the \textbf{master software} that manages the hardware and gives other programs
-        a place to run. It is the bridge between \textbf{you}, the \textbf{programs}, and the \textbf{hardware}.
-    \end{block}
-    \centering
-    \begin{tikzpicture}[layer/.style={rectangle, draw=black, font=\small, minimum height=0.85cm, minimum width=9cm, text centered}]
-        \node[layer, fill=cGreen!20] (user)  {User};
-        \node[layer, fill=blue!12, below=0.22cm of user] (app)   {Application Software (browser, editor, your C program)};
-        \node[layer, fill=cOrange!25, below=0.22cm of app] (os)    {Operating System (Windows / Linux / macOS)};
-        \node[layer, fill=cPurple!18, below=0.22cm of os]  (hw)    {Hardware (CPU, Memory, Devices)};
-    \end{tikzpicture}
-    \vspace{0.15cm}
-
-    \footnotesize Examples of tasks: managing memory, running programs, handling files, controlling devices.
-\end{frame}
-
-\begin{frame}{Evolution of Operating Systems: A Timeline}
-    \centering
-    \resizebox{\textwidth}{!}{%
-    \begin{tikzpicture}[every node/.style={font=\scriptsize}]
-        % timeline
-        \draw[flowarrow, thick] (0,0) -- (14.5,0);
-        \foreach \x/\yr in {1/1950s, 4/1960s, 7/1970s, 10/1980s, 13/2000s+} {
-            \draw (\x,0.1) -- (\x,-0.1);
-            \node[below] at (\x,-0.15) {\textbf{\yr}};
-        }
-        % milestones (spaced 3 units apart -> larger gap between boxes)
-        \node[process, fill=blue!8,   text width=2.2cm, above=0.6cm] at (1,0)  {\textbf{Batch}\\ jobs run one after another};
-        \node[process, fill=cGreen!12,text width=2.2cm, above=0.6cm] at (4,0)  {\textbf{Multi-\\programming} many jobs share CPU};
-        \node[process, fill=cOrange!15,text width=2.2cm, above=0.6cm] at (7,0) {\textbf{Time-\\sharing} many users at once};
-        \node[process, fill=cPurple!12,text width=2.2cm, above=0.6cm] at (10,0){\textbf{Personal / GUI} desktop icons \& mouse};
-        \node[process, fill=cRed!12,  text width=2.2cm, above=0.6cm] at (13,0) {\textbf{Mobile \& Cloud} phones, distributed};
-    \end{tikzpicture}}
-    \vspace{0.4cm}
-    \begin{itemize}\small
-        \item Each stage made the computer \textbf{easier to use} and able to do \textbf{more at once}.
-        \item Modern OSes let many programs and users run \emph{simultaneously} on the same machine.
-    \end{itemize}
-\end{frame}
-
-% =================================================================
-\section{Machine, Assembly \& High-Level Languages}
-% =================================================================
-\begin{frame}{Levels of Programming Languages}
-    \centering
-    \begin{tikzpicture}[every node/.style={font=\small, text centered},
-        lang/.style={rectangle, draw=black, minimum width=9cm, minimum height=1.1cm, text width=8.4cm, align=center}]
-        \node[lang, fill=cGreen!22] (hl)
-            {\textbf{High-Level Language} (C, Python, Java) --- close to human language};
-        \node[lang, fill=cOrange!25, below=0.3cm of hl] (asm)
-            {\textbf{Assembly Language} (MOV, ADD) --- short mnemonic codes};
-        \node[lang, fill=cPurple!18, below=0.3cm of asm] (mc)
-            {\textbf{Machine Language} (1010 0111) --- only 0s and 1s, what the CPU runs};
-        \draw[flowarrow, cAccent, thick] ($(hl.west)+(-0.9,0)$) -- ($(mc.west)+(-0.9,0)$)
-            node[midway, left, rotate=90, anchor=south, font=\scriptsize] {harder for humans $\rightarrow$};
-        \draw[flowarrow, cRed, thick] ($(mc.east)+(0.9,0)$) -- ($(hl.east)+(0.9,0)$)
-            node[midway, right, rotate=90, anchor=north, font=\scriptsize] {$\leftarrow$ easier for humans};
-    \end{tikzpicture}
-    \vspace{0.3cm}
-    \begin{itemize}\small
-        \item The CPU understands \textbf{only} machine language (binary).
-        \item We write in a high-level language; a \textbf{translator} converts it to machine code.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Comparing the Three Levels}
-    \renewcommand{\arraystretch}{1.4}
-    \centering
-    \begin{tabular}{@{}p{2.4cm}p{3.4cm}p{3.6cm}@{}}
-        \toprule
-        \textbf{Feature} & \textbf{Human friendliness} & \textbf{Example (add 2 numbers)} \\
-        \midrule
-        Machine   & Very hard (all 0/1)          & \texttt{10110000 01100001} \\
-        Assembly  & Hard (mnemonics)             & \texttt{MOV AL, 61h}\quad \texttt{ADD AL, BL} \\
-        High-level& Easy (English-like)          & \texttt{c = a + b;} \\
-        \bottomrule
-    \end{tabular}
-    \vspace{0.4cm}
-    \begin{block}{Key idea}
-        High-level languages like \textbf{C} let us write \emph{one} readable line instead of many cryptic machine instructions --- and the same C program can run on many different machines.
-    \end{block}
-\end{frame}
-
-% =================================================================
-\section{Software \& Hardware Trends; Programming Methodologies}
-% =================================================================
-\begin{frame}{Key Software \& Hardware Trends}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \begin{block}{Hardware trends}
-                \begin{itemize}\small
-                    \item \textbf{Moore's Law}: transistor count roughly doubles $\sim$every 2 years $\rightarrow$ faster, cheaper chips.
-                    \item Multi-core CPUs, GPUs.
-                    \item Smaller \& mobile: phones, embedded, IoT.
-                    \item Cloud data-centres provide computing ``on tap''.
-                \end{itemize}
-            \end{block}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \begin{block}{Software trends}
-                \begin{itemize}\small
-                    \item Open-source software \& reusable libraries.
-                    \item Mobile apps and web applications.
-                    \item Artificial Intelligence \& data science.
-                    \item Higher-level, safer languages built \emph{on top of} C.
-                \end{itemize}
-            \end{block}
-        \end{column}
-    \end{columns}
-    \vspace{0.2cm}
-    \footnotesize\centering
-    Hardware gets faster and cheaper; software gets smarter and more connected --- and \textbf{C} sits underneath much of it.
-\end{frame}
-
-\begin{frame}{Procedural vs.\ Object-Oriented Programming}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \begin{block}{Procedural (e.g.\ C)}
-                Program = a sequence of \textbf{procedures / functions} that operate on data.
-                \begin{itemize}\small
-                    \item Think: a \emph{recipe} --- do step 1, then 2, then 3.
-                    \item Data and functions are separate.
-                \end{itemize}
-            \end{block}
-            \centering
-            \begin{tikzpicture}[font=\scriptsize, node distance=0.4cm]
-                \node[process, fill=blue!10, minimum width=1.4cm] (f1){func 1};
-                \node[process, fill=blue!10, minimum width=1.4cm, right=of f1] (f2){func 2};
-                \node[process, fill=blue!10, minimum width=1.4cm, right=of f2] (f3){func 3};
-                \draw[flowarrow](f1)--(f2); \draw[flowarrow](f2)--(f3);
-            \end{tikzpicture}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \begin{block}{Object-Oriented (e.g.\ C++, Java)}
-                Program = a set of \textbf{objects} that bundle data \emph{and} the functions acting on it.
-                \begin{itemize}\small
-                    \item Think: real-world \emph{objects} (a Car that can \texttt{start()}, \texttt{stop()}).
-                    \item Ideas: class, object, inheritance.
-                \end{itemize}
-            \end{block}
-            \centering
-            \begin{tikzpicture}[font=\scriptsize]
-                \node[process, fill=cGreen!14, text width=2cm] (obj)
-                    {\textbf{Object: Car}\\ data: speed\\ methods: start(), stop()};
-            \end{tikzpicture}
-        \end{column}
-    \end{columns}
-    \vspace{0.15cm}
-    \footnotesize\centering In this course we focus on the \textbf{procedural} style using \textbf{C}.
-\end{frame}
-
-% =================================================================
-\section{Program Development in C}
-% =================================================================
-\begin{frame}{Why C?}
-    \begin{columns}[T]
-        \begin{column}{0.55\textwidth}
-            \begin{itemize}
-                \item Created by \textbf{Dennis Ritchie} at Bell Labs (early 1970s).
-                \item \textbf{Powerful} yet \textbf{small} --- close to the hardware but readable.
-                \item The ``mother language'': Linux, databases, and parts of Windows are written in C.
-                \item Learning C teaches you how a computer \emph{really} works.
-            \end{itemize}
-        \end{column}
-        \begin{column}{0.45\textwidth}
-            \begin{block}{C is a great first language because}
-                \begin{itemize}\small
-                    \item It is \textbf{fast}.
-                    \item It is used \textbf{everywhere}.
-                    \item Its ideas carry over to C++, Java, Python, \dots
-                \end{itemize}
-            \end{block}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}{From Source Code to Running Program}
-    \centering
-    \begin{tikzpicture}[every node/.style={font=\scriptsize},
-        tool/.style={rectangle, draw=black, rounded corners, minimum width=2.0cm, minimum height=0.8cm, align=center, fill=blue!10},
-        art/.style ={rectangle, draw=black, dashed, minimum width=2.0cm, minimum height=0.8cm, align=center, fill=cGreen!14}]
-        % top row: tools
-        \node[tool] (edit) {Text Editor};
-        \node[tool, right=1.3cm of edit] (comp) {Compiler};
-        \node[tool, right=1.3cm of comp] (link) {Linker};
-        \node[tool, right=1.3cm of link] (run)  {Loader / Run};
-        % bottom row: artifacts each tool produces
-        \node[art, below=0.9cm of edit] (src) {\texttt{program.c}\\ (source)};
-        \node[art, below=0.9cm of comp] (obj) {\texttt{program.o}\\ (object)};
-        \node[art, below=0.9cm of link] (exe) {\texttt{a.out / .exe}\\ (executable)};
-        \node[art, below=0.9cm of run]  (res) {Output\\ (results)};
-        % library feeding the linker
-        \node[cylinder, draw=black, shape border rotate=90, aspect=0.3, minimum width=1.2cm, minimum height=0.9cm, fill=cOrange!20, above=0.7cm of link] (lib) {Library};
-        % top control-flow chain
-        \draw[flowarrow] (edit) -- (comp);
-        \draw[flowarrow] (comp) -- (link);
-        \draw[flowarrow] (link) -- (run);
-        % produces (down)
-        \draw[flowarrow, gray] (edit) -- (src);
-        \draw[flowarrow, gray] (comp) -- (obj);
-        \draw[flowarrow, gray] (link) -- (exe);
-        \draw[flowarrow, gray] (run)  -- (res);
-        \draw[flowarrow, cOrange!70!black] (lib) -- (link);
-    \end{tikzpicture}
-    \vspace{0.25cm}
-    \begin{columns}[T]
-        \begin{column}{0.55\textwidth}
-            \begin{block}{One command does it all (using GCC)}
-                \small \texttt{gcc\ program.c\ -o\ program}\\ then \quad \texttt{./program}
-            \end{block}
-        \end{column}
-        \begin{column}{0.45\textwidth}
-            \footnotesize Each step's output feeds the next. If the compiler reports \textbf{errors}, fix them and compile again --- this ``edit\;$\rightarrow$\;compile\;$\rightarrow$\;run'' loop is normal!
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}{Translators: Compiler vs.\ Interpreter}
-    \begin{block}{Why we need a translator}
-        A \textbf{translator} converts our high-level C into machine code. The two main kinds are the \textbf{compiler} and the \textbf{interpreter}.
-    \end{block}
-    \vspace{0.05cm}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \centering\textbf{Compiler} (C uses this)\\[2pt]
-            \resizebox{0.92\linewidth}{!}{%
-            \begin{tikzpicture}[every node/.style={font=\scriptsize}, node distance=0.4cm,
-                mini/.style={minimum width=1.5cm, minimum height=0.7cm}]
-                \node[io, mini, fill=cOrange!20] (s){Whole\\ source};
-                \node[process, mini, right=of s] (c){Compiler};
-                \node[startstop, mini, right=of c, fill=cGreen!22] (e){Executable};
-                \draw[flowarrow](s)--(c); \draw[flowarrow](c)--(e);
-            \end{tikzpicture}}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \centering\textbf{Interpreter} (e.g.\ Python)\\[2pt]
-            \resizebox{0.92\linewidth}{!}{%
-            \begin{tikzpicture}[every node/.style={font=\scriptsize}, node distance=0.4cm,
-                mini/.style={minimum width=1.5cm, minimum height=0.7cm}]
-                \node[io, mini, fill=cOrange!20] (s){One line};
-                \node[process, mini, right=of s] (c){Interpreter};
-                \node[io, mini, right=of c, fill=cGreen!20] (e){Run it};
-                \draw[flowarrow](s)--(c); \draw[flowarrow](c)--(e);
-                \draw[flowarrow] (e.south) -- ++(0,-0.4) -| (s.south);
-            \end{tikzpicture}}
-        \end{column}
-    \end{columns}
-    \vspace{0.15cm}
-    {\small
-    \renewcommand{\arraystretch}{1.15}
-    \centering
-    \begin{tabular}{@{}p{5.3cm}p{5.3cm}@{}}
-        \toprule
-        \textbf{Compiler} & \textbf{Interpreter} \\
-        \midrule
-        Translates the \emph{whole} program at once & Translates \emph{line by line} \\
-        Produces a separate executable file & No separate executable file \\
-        Faster; all errors reported together & Slower; errors reported line-wise \\
-        \bottomrule
-    \end{tabular}}
-\end{frame}
-
-% =================================================================
-\section{Structured Programming: Algorithms \& Pseudo-code}
-% =================================================================
-\begin{frame}{Steps in Problem Solving}
-    \begin{block}{Before writing code, plan the solution}
-        Good programmers think first, then type. Solving a problem on a computer follows a clear set of steps.
-    \end{block}
-    \centering
-    \begin{tikzpicture}[every node/.style={font=\scriptsize}, node distance=0.55cm]
-        \node[process, minimum width=2.0cm, text width=2.0cm] (p1){1. Define the problem};
-        \node[process, right=of p1, minimum width=2.0cm, text width=2.0cm] (p2){2. Analyse (inputs/outputs)};
-        \node[process, right=of p2, minimum width=2.0cm, text width=2.0cm] (p3){3. Design algorithm / flowchart};
-        \node[process, below=0.9cm of p3, minimum width=2.0cm, text width=2.0cm] (p4){4. Write the code};
-        \node[process, left=of p4, minimum width=2.0cm, text width=2.0cm] (p5){5. Test \& debug};
-        \node[process, left=of p5, minimum width=2.0cm, text width=2.0cm] (p6){6. Document \& maintain};
-        \draw[flowarrow](p1)--(p2); \draw[flowarrow](p2)--(p3);
-        \draw[flowarrow](p3)--(p4); \draw[flowarrow](p4)--(p5); \draw[flowarrow](p5)--(p6);
-    \end{tikzpicture}
-    \vspace{0.15cm}
-    \begin{itemize}\small
-        \item \textbf{Analysis} asks: what are the \emph{inputs}, the \emph{outputs}, and the \emph{constraints}?
-        \item Only step 4 is actual coding --- most of the thinking happens \emph{before} it.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Structured Programming}
-    \begin{block}{Idea}
-        Build every program from just \textbf{three} basic control structures. This keeps code
-        clear, correct, and easy to read (no ``spaghetti'' jumps).
-    \end{block}
-    \vspace{0.2cm}
-    \begin{columns}[T]
-        % ---- 1. Sequence ----
-        \begin{column}{0.3\textwidth}
-            \centering \textbf{1. Sequence}\\ \footnotesize(do in order)\\[6pt]
-            \begin{tikzpicture}[font=\scriptsize, node distance=0.5cm]
-                \node[process, fill=blue!10, minimum width=1.5cm] (s1){Step A};
-                \node[process, fill=blue!10, minimum width=1.5cm, below=of s1] (s2){Step B};
-                \draw[flowarrow](s1)--(s2);
-            \end{tikzpicture}
-        \end{column}
-        % ---- 2. Selection ----
-        \begin{column}{0.4\textwidth}
-            \centering \textbf{2. Selection}\\ \footnotesize(choose a path)\\[6pt]
-            \begin{tikzpicture}[font=\scriptsize, node distance=0.4cm,
-                dsm/.style={diamond, aspect=1.6, draw=black, fill=cGreen!18, minimum width=1.6cm, inner sep=0pt}]
-                \node[dsm] (d){cond?};
-                \node[process, fill=cGreen!12, below left=0.5cm and 0cm of d, minimum width=0.9cm, text width=0.7cm](y){yes};
-                \node[process, fill=cRed!12, below right=0.5cm and 0cm of d, minimum width=0.9cm, text width=0.6cm](n){no};
-                \draw[flowarrow](d.west) -| (y);
-                \draw[flowarrow](d.east) -| (n);
-            \end{tikzpicture}
-        \end{column}
-        % ---- 3. Repetition ----
-        \begin{column}{0.28\textwidth}
-            \centering \textbf{3. Repetition}\\ \footnotesize(loop)\\[6pt]
-            \begin{tikzpicture}[font=\scriptsize, node distance=0.5cm,
-                dsm/.style={diamond, aspect=1.6, draw=black, fill=cGreen!18, minimum width=1.6cm, inner sep=0pt}]
-                \node[dsm] (l){cond?};
-                \node[process, fill=cOrange!14, below=0.6cm of l, minimum width=1.3cm](body){body};
-                \draw[flowarrow](l) -- node[right,font=\tiny]{true} (body);
-                \draw[flowarrow](body.east) -- ++(0.35,0) |- (l.east);
-            \end{tikzpicture}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}[fragile]{Algorithm and Pseudo-code}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \begin{block}{Algorithm}
-                A finite, step-by-step procedure to solve a problem --- \emph{before} writing any code.
-            \end{block}
-            \textbf{Algorithm: add two numbers}
-            \begin{enumerate}\small
-                \item Start
-                \item Read two numbers \texttt{a} and \texttt{b}
-                \item Compute \texttt{sum = a + b}
-                \item Display \texttt{sum}
-                \item Stop
-            \end{enumerate}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \begin{block}{Pseudo-code}
-                An informal, English-like sketch of the code --- language independent.
-            \end{block}
-\begin{semiverbatim}\small
-BEGIN
-   INPUT a, b
-   sum \(\leftarrow\) a + b
-   OUTPUT sum
-END
-\end{semiverbatim}
-            \vspace{0.1cm}
-            \footnotesize Good pseudo-code translates almost line-by-line into C.
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}{Characteristics of a Good Algorithm}
-    \begin{columns}[T]
-        \begin{column}{0.52\textwidth}
-            \begin{itemize}
-                \item \textbf{Input} --- zero or more well-defined inputs.
-                \item \textbf{Output} --- at least one useful output.
-                \item \textbf{Definiteness} --- every step is precise and unambiguous.
-                \item \textbf{Finiteness} --- it must end after a finite number of steps.
-                \item \textbf{Effectiveness} --- each step is basic enough to be carried out.
-            \end{itemize}
-        \end{column}
-        \begin{column}{0.48\textwidth}
-            \begin{block}{Rule of thumb}
-                \small If a stranger can follow your steps and get the \emph{same} correct answer every time, it is a good algorithm.
-            \end{block}
-            \begin{block}{Why it matters}
-                \small A clear algorithm makes the C code almost write itself --- and makes bugs easy to spot.
-            \end{block}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}{Flowchart Symbols You Should Know}
-    \centering
-    \begin{tikzpicture}[every node/.style={font=\scriptsize, text centered}, node distance=0.6cm]
-        \node[startstop] (t){Terminal\\(Start/Stop)};
-        \node[io, right=1.2cm of t] (io){Input / Output};
-        \node[process, right=1.2cm of io] (p){Process\\(compute)};
-        \node[decision, right=1.4cm of p] (d){Decision\\(yes/no)};
-    \end{tikzpicture}
-    \vspace{0.5cm}
-    \begin{block}{Flowchart: add two numbers}
-        \centering
-        \begin{tikzpicture}[every node/.style={font=\scriptsize}, node distance=0.8cm]
-            \node[startstop] (start){Start};
-            \node[io, right=of start, fill=cOrange!20] (read){Read a, b};
-            \node[process, right=of read, minimum width=1.8cm, text width=1.8cm] (calc){sum = a + b};
-            \node[io, right=of calc, fill=cGreen!20] (print){Print sum};
-            \node[startstop, right=of print] (stop){Stop};
-            \draw[flowarrow](start)--(read);
-            \draw[flowarrow](read)--(calc);
-            \draw[flowarrow](calc)--(print);
-            \draw[flowarrow](print)--(stop);
-        \end{tikzpicture}
-    \end{block}
-\end{frame}
-
-% =================================================================
-\section{Anatomy of a C Program}
-% =================================================================
-\begin{frame}[fragile]{The Skeleton of Every C Program}
-    \begin{columns}[T]
-        \begin{column}{0.54\textwidth}
-\begin{lstlisting}
-#include <stdio.h>   /* 1: header */
-
-int main(void)       /* 2: start  */
-{                    /* 3: body   */
-    /* your statements go here */
-
-    return 0;        /* 4: exit   */
-}
-\end{lstlisting}
-        \end{column}
-        \begin{column}{0.46\textwidth}
-            \begin{enumerate}\small
-                \item \textbf{Preprocessor directive} --- \texttt{\#include} pulls in a library (here \texttt{stdio.h} for input/output).
-                \item \textbf{\texttt{main()}} --- execution always begins here; every program has exactly one.
-                \item \textbf{Body} --- the statements between \texttt{\{ \}}; each ends with a semicolon \texttt{;}
-                \item \textbf{\texttt{return 0;}} --- tells the OS the program finished successfully.
-            \end{enumerate}
-            \footnotesize Learn this shape first --- every program we write just fills in the body.
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}{The C Character Set and Tokens}
-    \begin{columns}[T]
-        \begin{column}{0.44\textwidth}
-            \begin{block}{Character set}
-                The symbols C understands:
-                \begin{itemize}\small
-                    \item Letters \texttt{A--Z}, \texttt{a--z}
-                    \item Digits \texttt{0--9}
-                    \item Special symbols \texttt{+ - * / = \% ; , \dots}
-                    \item Whitespace (space, tab, newline)
-                \end{itemize}
-            \end{block}
-        \end{column}
-        \begin{column}{0.56\textwidth}
-            \begin{block}{Tokens --- the smallest units}
-                Characters group into \textbf{tokens}:
-            \end{block}
-            \centering
-            \begin{tikzpicture}[every node/.style={font=\scriptsize, align=center},
-                tk/.style={rectangle, draw=black, rounded corners, fill=blue!8, minimum height=0.55cm, inner sep=2pt}]
-                \node[tk] (a){Keywords\\ \texttt{int}};
-                \node[tk, right=0.15cm of a] (b){Identifiers\\ \texttt{sum}};
-                \node[tk, right=0.15cm of b] (c){Constants\\ \texttt{42}};
-                \node[tk, below=0.2cm of a] (d){Strings\\ \texttt{"Hi"}};
-                \node[tk, right=0.15cm of d] (e){Operators\\ \texttt{+ =}};
-                \node[tk, right=0.15cm of e] (f){Symbols\\ \texttt{; \{ \}}};
-            \end{tikzpicture}
-            \vspace{0.15cm}
-
-            \footnotesize A compiler first breaks your code into these tokens.
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}{Keywords: C's Reserved Words}
-    \begin{block}{What is a keyword?}
-        A \textbf{keyword} has a fixed, special meaning in C. There are \textbf{32} of them --- you
-        cannot use them as your own names. C is \textbf{case-sensitive}: \texttt{int} is a keyword, \texttt{INT} is not.
-    \end{block}
-    \renewcommand{\arraystretch}{1.3}
-    \centering\ttfamily\small
-    \begin{tabular}{@{}llllllll@{}}
-        auto & break & case & char & const & continue & default & do \\
-        double & else & enum & extern & float & for & goto & if \\
-        int & long & register & return & short & signed & sizeof & static \\
-        struct & switch & typedef & union & unsigned & void & volatile & while \\
-    \end{tabular}
-
-    \vspace{0.25cm}
-    \normalfont\footnotesize The ones we use most as beginners: \texttt{int}, \texttt{float}, \texttt{char}, \texttt{if}, \texttt{else}, \texttt{for}, \texttt{while}, \texttt{return}.
-\end{frame}
-
-\begin{frame}{Identifiers: Naming Your Variables}
-    \begin{block}{Identifier}
-        The \textbf{name} you give to a variable, function, or constant.
-    \end{block}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \textbf{Rules}
-            \begin{itemize}\small
-                \item Use letters, digits, and underscore \texttt{\_}.
-                \item Must \emph{start} with a letter or \texttt{\_} (not a digit).
-                \item No spaces and no special symbols.
-                \item Cannot be a keyword.
-                \item Case-sensitive: \texttt{age} $\neq$ \texttt{Age}.
-            \end{itemize}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \renewcommand{\arraystretch}{1.25}
-            \centering
-            \begin{tabular}{@{}ll@{}}
-                \toprule
-                \textbf{Valid} & \textbf{Invalid} \\
-                \midrule
-                \texttt{total}    & \texttt{2sum} (starts with digit) \\
-                \texttt{marks1}   & \texttt{my age} (has a space) \\
-                \texttt{\_count}  & \texttt{float} (keyword) \\
-                \texttt{avgScore} & \texttt{rate\%} (bad symbol) \\
-                \bottomrule
-            \end{tabular}
-            \vspace{0.15cm}
-
-            \footnotesize Tip: choose \emph{meaningful} names like \texttt{total}, not \texttt{t}.
-        \end{column}
-    \end{columns}
-\end{frame}
-
-% =================================================================
-\section{The C Standard Library}
-% =================================================================
-\begin{frame}{The C Standard Library}
-    \begin{block}{What is it?}
-        A ready-made collection of \textbf{functions} that come with C, so you don't reinvent the wheel.
-        You get access to them with \texttt{\#include <header.h>}.
-    \end{block}
-    \renewcommand{\arraystretch}{1.3}
-    \centering
-    \begin{tabular}{@{}llp{5.2cm}@{}}
-        \toprule
-        \textbf{Header} & \textbf{Purpose} & \textbf{Example functions} \\
-        \midrule
-        \texttt{stdio.h}  & input / output      & \texttt{printf}, \texttt{scanf}, \texttt{getchar} \\
-        \texttt{stdlib.h} & general utilities   & \texttt{malloc}, \texttt{rand}, \texttt{abs}, \texttt{atoi} \\
-        \texttt{math.h}   & mathematics         & \texttt{sqrt}, \texttt{pow}, \texttt{sin}, \texttt{ceil} \\
-        \texttt{string.h} & text handling       & \texttt{strlen}, \texttt{strcpy}, \texttt{strcmp} \\
-        \texttt{ctype.h}  & character tests     & \texttt{isdigit}, \texttt{toupper} \\
-        \bottomrule
-    \end{tabular}
-    \vspace{0.2cm}
-    \footnotesize\centering e.g.\ \texttt{\#include <math.h>} then \texttt{y = sqrt(25.0);} gives \texttt{y = 5.0}.
-\end{frame}
-
-% =================================================================
-\section{Data Types in C}
-% =================================================================
-\begin{frame}{Variables and Data Types}
-    \begin{block}{Variable}
-        A \textbf{named box} in memory that stores a value. You must declare its \emph{type} first:
-        \texttt{int age = 20;}
-    \end{block}
-    \centering
-    \begin{tikzpicture}[font=\small]
-        \node[process, minimum width=1.6cm, minimum height=1cm, fill=blue!10] (box) {20};
-        \node[above=0.05cm of box, font=\footnotesize] {\texttt{age} \; (type: int)};
-        \draw[flowarrow] ($(box.west)+(-1.5,0)$) node[left, font=\footnotesize]{\texttt{age = 20;}} -- (box.west);
-    \end{tikzpicture}
-    \vspace{0.2cm}
-    \begin{itemize}\small
-        \item The \textbf{type} decides what values fit and how much memory is used.
-        \item Choose the smallest type that comfortably holds your data.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{The Basic Data Types}
-    \renewcommand{\arraystretch}{1.35}
-    \centering
-    \begin{tabular}{@{}llll@{}}
-        \toprule
-        \textbf{Type} & \textbf{Stores} & \textbf{Typical size} & \textbf{Example} \\
-        \midrule
-        \texttt{int}    & whole numbers            & 4 bytes & \texttt{int n = 42;} \\
-        \texttt{float}  & real numbers (decimals)  & 4 bytes & \texttt{float g = 9.8f;} \\
-        \texttt{double} & real numbers (more precise) & 8 bytes & \texttt{double pi = 3.14159;} \\
-        \texttt{char}   & a single character       & 1 byte  & \texttt{char grade = 'A';} \\
-        \bottomrule
-    \end{tabular}
-    \vspace{0.3cm}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \begin{block}{Modifiers}
-                \small \texttt{short}, \texttt{long}, \texttt{unsigned} adjust range/size, e.g.\ \texttt{unsigned int} (no negatives), \texttt{long int} (bigger).
-            \end{block}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \begin{block}{A character is a small number}
-                \small \texttt{'A'} is stored as the integer \texttt{65} (its ASCII code).
-            \end{block}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}[fragile]{Size and Range of Each Variable}
-    \begin{block}{Every type occupies a fixed amount of memory}
-        The \textbf{size} (in bytes) decides the \textbf{range} of values a variable can hold. Sizes are typical for a modern computer.
-    \end{block}
-    \renewcommand{\arraystretch}{1.25}
-    \centering
-    \begin{tabular}{@{}lccll@{}}
-        \toprule
-        \textbf{Type} & \textbf{Size} & \textbf{Bits} & \textbf{Approx.\ range} & \textbf{Specifier} \\
-        \midrule
-        \texttt{char}   & 1 byte & 8  & $-128$ to $127$                & \texttt{\%c} \\
-        \texttt{int}    & 4 bytes & 32 & $-2.1\times10^{9}$ to $2.1\times10^{9}$ & \texttt{\%d} \\
-        \texttt{float}  & 4 bytes & 32 & $\sim$6--7 significant digits  & \texttt{\%f} \\
-        \texttt{double} & 8 bytes & 64 & $\sim$15 significant digits    & \texttt{\%lf} \\
-        \bottomrule
-    \end{tabular}
-    \vspace{0.2cm}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \begin{block}{Find the size yourself}
-                \small The \texttt{sizeof} operator returns a type's size in bytes:
-            \end{block}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-\begin{lstlisting}
-printf("%d", sizeof(int));
-// prints 4
-\end{lstlisting}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}[fragile]{Constants: Values That Never Change}
-    \begin{block}{Constant}
-        A value that is fixed and \textbf{cannot be changed} while the program runs (e.g.\ $\pi$, the number of days in a week). Using constants makes code safer and easier to read.
-    \end{block}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \textbf{Using the \texttt{const} keyword:}
-\begin{lstlisting}
-const float PI = 3.14159;
-const int DAYS = 7;
-\end{lstlisting}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \textbf{Using \texttt{\#define} (a macro):}
-\begin{lstlisting}
-#define MAX 100
-#define PI 3.14159
-\end{lstlisting}
-        \end{column}
-    \end{columns}
-    \vspace{0.1cm}
-    \begin{itemize}\small
-        \item \texttt{const} makes a \emph{typed} read-only variable; \texttt{\#define} does a plain text substitution before compiling.
-        \item By convention, constants are written in \texttt{UPPERCASE}. Trying to change one is an error.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Variable Scope: Local vs.\ Global}
-    \begin{columns}[T]
-        \begin{column}{0.52\textwidth}
-\begin{lstlisting}
-int x = 5;        /* global */
-
-int main(void) {
-    int y = 10;   /* local  */
-    printf("%d %d", x, y);
-    return 0;
-}
-\end{lstlisting}
-        \end{column}
-        \begin{column}{0.48\textwidth}
-            \begin{block}{Scope = where a variable is visible}
-                \small
-                \begin{itemize}
-                    \item \textbf{Local} --- declared \emph{inside} a function; usable only there.
-                    \item \textbf{Global} --- declared \emph{outside} all functions; usable everywhere.
-                \end{itemize}
-            \end{block}
-            \footnotesize Prefer local variables --- they keep parts of the program independent and reduce accidental bugs.
-        \end{column}
-    \end{columns}
-\end{frame}
-
-% =================================================================
-\section{Operators in C}
-% =================================================================
-\begin{frame}{Arithmetic Operators}
-    \renewcommand{\arraystretch}{1.35}
-    \centering
-    \begin{tabular}{@{}cllc@{}}
-        \toprule
-        \textbf{Operator} & \textbf{Meaning} & \textbf{Example} & \textbf{Result} \\
-        \midrule
-        \texttt{+} & addition        & \texttt{7 + 3}  & \texttt{10} \\
-        \texttt{-} & subtraction     & \texttt{7 - 3}  & \texttt{4}  \\
-        \texttt{*} & multiplication  & \texttt{7 * 3}  & \texttt{21} \\
-        \texttt{/} & division        & \texttt{7 / 3}  & \texttt{2}  (integer!) \\
-        \texttt{\%} & modulus (remainder) & \texttt{7 \% 3} & \texttt{1} \\
-        \bottomrule
-    \end{tabular}
-    \vspace{0.3cm}
-    \begin{block}{\textbf{Beginner trap:} integer division}
-        \small \texttt{7 / 3} gives \texttt{2}, \emph{not} 2.33, because both are integers.
-        Use \texttt{7.0 / 3} to get \texttt{2.333\ldots} \; The \texttt{\%} operator works only on integers.
-    \end{block}
-\end{frame}
-
-\begin{frame}{Operator Precedence (Order of Operations)}
-    \begin{columns}[T]
-        \begin{column}{0.52\textwidth}
-            \begin{itemize}
-                \item C follows maths-like precedence: \\[2pt]
-                \centering \texttt{*}\; \texttt{/}\; \texttt{\%} \; \textbf{before} \; \texttt{+}\; \texttt{-}
-                \item Same level $\rightarrow$ left to right.
-                \item Use \textbf{parentheses} to be explicit and clear.
-            \end{itemize}
-            \vspace{0.3cm}
-            \begin{block}{Example}
-                \small
-                \texttt{2 + 3 * 4} \; $\rightarrow$ \; \texttt{2 + 12} \; $\rightarrow$ \; \texttt{14} \\
-                \texttt{(2 + 3) * 4} \; $\rightarrow$ \; \texttt{20}
-            \end{block}
-        \end{column}
-        \begin{column}{0.48\textwidth}
-            \begin{block}{Assignment \& shortcuts}
-                \small
-                \begin{itemize}
-                    \item \texttt{x = 5;} stores 5 in \texttt{x}.
-                    \item \texttt{x += 2;} means \texttt{x = x + 2;}
-                    \item \texttt{x++;} increases \texttt{x} by 1.
-                    \item \texttt{x{-}{-};} decreases \texttt{x} by 1.
-                \end{itemize}
-            \end{block}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}{Relational and Logical Operators}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \begin{block}{Relational --- compare two values}
-                \small Result is \textbf{true (1)} or \textbf{false (0)}.
-            \end{block}
-            \renewcommand{\arraystretch}{1.25}
-            \centering
-            \begin{tabular}{@{}cll@{}}
-                \toprule
-                \textbf{Op} & \textbf{Meaning} & \textbf{Example} \\
-                \midrule
-                \texttt{==} & equal to        & \texttt{5 == 5} $\rightarrow$ 1 \\
-                \texttt{!=} & not equal       & \texttt{5 != 3} $\rightarrow$ 1 \\
-                \texttt{>}  & greater than    & \texttt{5 > 3}  $\rightarrow$ 1 \\
-                \texttt{<}  & less than       & \texttt{5 < 3}  $\rightarrow$ 0 \\
-                \texttt{>=} & greater/equal   & \texttt{5 >= 5} $\rightarrow$ 1 \\
-                \texttt{<=} & less/equal      & \texttt{4 <= 3} $\rightarrow$ 0 \\
-                \bottomrule
-            \end{tabular}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \begin{block}{Logical --- combine conditions}
-                \small Used to join or invert true/false tests.
-            \end{block}
-            \renewcommand{\arraystretch}{1.25}
-            \centering
-            \begin{tabular}{@{}cll@{}}
-                \toprule
-                \textbf{Op} & \textbf{Meaning} & \textbf{True when} \\
-                \midrule
-                \texttt{\&\&} & AND & both are true \\
-                \texttt{||}   & OR  & at least one is true \\
-                \texttt{!}    & NOT & flips true/false \\
-                \bottomrule
-            \end{tabular}
-            \vspace{0.2cm}
-            \footnotesize e.g.\ \texttt{(age >= 18 \&\& age < 60)} is true only for ages 18 to 59.
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}[fragile]{Assignment and Increment Operators}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \renewcommand{\arraystretch}{1.25}
-            \centering
-            \begin{tabular}{@{}cl@{}}
-                \toprule
-                \textbf{Operator} & \textbf{Meaning} \\
-                \midrule
-                \texttt{x = 5}  & assign 5 to x \\
-                \texttt{x += 2} & \texttt{x = x + 2} \\
-                \texttt{x -= 3} & \texttt{x = x - 3} \\
-                \texttt{x *= 4} & \texttt{x = x * 4} \\
-                \texttt{x /= 5} & \texttt{x = x / 5} \\
-                \bottomrule
-            \end{tabular}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-\begin{lstlisting}
-int x = 10;
-x += 5;   // 15
-x -= 3;   // 12
-x *= 2;   // 24
-x /= 4;   // 6
-\end{lstlisting}
-            \centering\footnotesize Final value of \texttt{x} is \fbox{\texttt{6}}.
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}[fragile]{A Peek at Bitwise Operators}
-    \begin{block}{Working at the level of bits}
-        Bitwise operators act on the individual \textbf{0/1 bits} of an integer. They are common in
-        \emph{embedded systems} and \emph{hardware control} --- handy to recognise even as a beginner.
-    \end{block}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-\begin{lstlisting}
-int a = 5;   // 0101
-int b = 3;   // 0011
-
-a & b;   // 0001 = 1  (AND)
-a | b;   // 0111 = 7  (OR)
-a ^ b;   // 0110 = 6  (XOR)
-~a;      // flips all bits
-a << 1;  // 1010 = 10 (x2)
-a >> 1;  // 0010 = 2  (/2)
-\end{lstlisting}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \begin{itemize}\small
-                \item \texttt{\&} AND --- 1 only if \emph{both} bits are 1.
-                \item \texttt{|} OR --- 1 if \emph{any} bit is 1.
-                \item \texttt{\textasciicircum} XOR --- 1 if the bits \emph{differ}.
-                \item \texttt{\textasciitilde} NOT --- flips every bit.
-                \item \texttt{<<} left shift --- multiplies by 2.
-                \item \texttt{>>} right shift --- divides by 2.
-            \end{itemize}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-% =================================================================
-\section{Input and Output in C}
-% =================================================================
-\begin{frame}{Classification of I/O Functions}
-    \centering
-    \begin{tikzpicture}[every node/.style={font=\footnotesize},
-        hdr/.style={rectangle, draw=black, thick, rounded corners, minimum width=3.2cm, minimum height=0.7cm, align=center, font=\bfseries\footnotesize, fill=cAccent!20},
-        grp/.style={rectangle, draw=black, minimum width=3.4cm, align=center, fill=blue!6}]
-        \node[hdr] (io) {I / O Functions};
-        \node[hdr, below left=1.1cm and 0.6cm of io, fill=cGreen!18] (fmt) {Formatted};
-        \node[hdr, below right=1.1cm and 0.6cm of io, fill=cOrange!20] (unf) {Unformatted};
-        \draw[flowarrow] (io.south) -- ++(0,-0.35) -| (fmt.north);
-        \draw[flowarrow] (io.south) -- ++(0,-0.35) -| (unf.north);
-        \node[grp, below=0.4cm of fmt, text width=3.2cm] (fmtc)
-            {\textbf{Input:} \texttt{scanf}, \texttt{fscanf}\\ \textbf{Output:} \texttt{printf}, \texttt{fprintf}};
-        \node[grp, below=0.4cm of unf, text width=3.6cm] (unfc)
-            {\textbf{Input:} \texttt{getchar}, \texttt{gets}, \texttt{getch}\\ \textbf{Output:} \texttt{putchar}, \texttt{puts}};
-        \draw[flowarrow] (fmt) -- (fmtc);
-        \draw[flowarrow] (unf) -- (unfc);
-    \end{tikzpicture}
-    \vspace{0.2cm}
-    \begin{itemize}\small
-        \item \textbf{Formatted} functions use \emph{format specifiers} (\texttt{\%d}, \texttt{\%f}, \dots) to control layout --- our focus.
-        \item \textbf{Unformatted} functions read/write raw characters or strings without formatting.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Output with \texttt{printf} --- Format Specifiers}
-    \renewcommand{\arraystretch}{1.3}
-    \centering
-    \begin{tabular}{@{}cll@{}}
-        \toprule
-        \textbf{Specifier} & \textbf{Used for} & \textbf{Example} \\
-        \midrule
-        \texttt{\%d} & integer               & \texttt{printf("\%d", 42);} $\rightarrow$ \texttt{42} \\
-        \texttt{\%f} & float / double        & \texttt{printf("\%f", 3.14);} $\rightarrow$ \texttt{3.140000} \\
-        \texttt{\%c} & single character      & \texttt{printf("\%c", 'A');} $\rightarrow$ \texttt{A} \\
-        \texttt{\%s} & string (text)         & \texttt{printf("\%s", "Hi");} $\rightarrow$ \texttt{Hi} \\
-        \bottomrule
-    \end{tabular}
-    \vspace{0.3cm}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \begin{block}{Width \& precision}
-                \small
-                \texttt{\%5d} --- at least 5 columns wide.\\
-                \texttt{\%.2f} --- 2 digits after the point.\\
-                \texttt{printf("\%.2f", 3.14159);} $\rightarrow$ \texttt{3.14}
-            \end{block}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \begin{block}{Escape sequences}
-                \small
-                \texttt{\textbackslash n} new line \quad \texttt{\textbackslash t} tab \\
-                \texttt{\textbackslash\textbackslash} backslash \quad \texttt{\textbackslash"} quote
-            \end{block}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}[fragile]{Input with \texttt{scanf}}
-\begin{lstlisting}
-int age;
-printf("Enter your age: ");
-scanf("%d", &age);          /* note the & (address of age) */
-printf("Next year you will be %d\n", age + 1);
-\end{lstlisting}
-    \begin{itemize}\small
-        \item \texttt{scanf} reads typed input and stores it in a variable.
-        \item \textbf{Crucial:} put an \texttt{\&} (``address of'') before the variable --- \texttt{\&age}.
-        \item The specifier must match the type: \texttt{\%d} int, \texttt{\%f} float, \texttt{\%c} char, \texttt{\%s} string.
-    \end{itemize}
-    \begin{block}{Reading several values}
-        \small \texttt{scanf("\%d \%f", \&n, \&x);} reads an integer then a float.
-    \end{block}
-    \centering\footnotesize\textbf{Sample run:}\; \fbox{\texttt{Enter your age: 20}} $\rightarrow$ \fbox{\texttt{Next year you will be 21}}
-\end{frame}
-
-% =================================================================
-\section{Control Structures}
-% =================================================================
-\begin{frame}[fragile]{Making Decisions: \texttt{if} / \texttt{if-else}}
-    \begin{columns}[T]
-        \begin{column}{0.55\textwidth}
-\begin{lstlisting}
-if (marks >= 40) {
-    printf("Pass\n");
-} else {
-    printf("Fail\n");
-}
-\end{lstlisting}
-            \begin{itemize}\small
-                \item The condition in \texttt{( )} is either \textbf{true} or \textbf{false}.
-                \item Comparisons: \texttt{==}\; \texttt{!=}\; \texttt{<}\; \texttt{>}\; \texttt{<=}\; \texttt{>=}
-                \item \textbf{Trap:} \texttt{==} tests equality; \texttt{=} \emph{assigns}!
-            \end{itemize}
-        \end{column}
-        \begin{column}{0.45\textwidth}
-            \centering
-            \begin{tikzpicture}[font=\scriptsize, node distance=0.55cm]
-                \node[decision] (d){marks \\ $\geq 40$?};
-                \node[io, below left=0.9cm and 0.55cm of d, fill=cGreen!20] (p){Print ``Pass''};
-                \node[io, below right=0.9cm and 0.55cm of d, fill=cRed!18] (f){Print ``Fail''};
-                \node[startstop, below=2.2cm of d] (m){continue};
-                \draw[flowarrow] (d.west) -| node[near start,above,font=\tiny]{true} (p);
-                \draw[flowarrow] (d.east) -| node[near start,above,font=\tiny]{false} (f);
-                \draw[flowarrow] (p) |- (m);
-                \draw[flowarrow] (f) |- (m);
-            \end{tikzpicture}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}[fragile]{Choosing Among Many: \texttt{switch}}
-    \begin{columns}[T]
-        \begin{column}{0.55\textwidth}
-\begin{lstlisting}
-switch (choice) {
-    case 1:
-        printf("Add\n");
-        break;
-    case 2:
-        printf("Subtract\n");
-        break;
-    default:
-        printf("Invalid\n");
-}
-\end{lstlisting}
-        \end{column}
-        \begin{column}{0.45\textwidth}
-            \begin{itemize}\small
-                \item Compares one variable against several \texttt{case} values.
-                \item \texttt{break;} stops ``falling through'' to the next case --- \textbf{don't forget it}.
-                \item \texttt{default:} runs if nothing else matches.
-                \item Cleaner than a long \texttt{if--else if} chain.
-            \end{itemize}
-            \begin{block}{Note}
-                \small \texttt{case} labels must be constant integers or characters (e.g.\ \texttt{1}, \texttt{'A'}).
-            \end{block}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}[fragile]{Loops: \texttt{while} and \texttt{do--while}}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \textbf{\texttt{while}} --- test \emph{first}, may run 0 times:
-\begin{lstlisting}
-int i = 1;
-while (i <= 5) {
-    printf("%d ", i);
-    i++;
-}
-\end{lstlisting}
-            \centering
-            \begin{tikzpicture}[font=\tiny, node distance=0.4cm]
-                \node[decision] (c){i<=5?};
-                \node[process, below=of c, fill=cOrange!14](b){print i; i++};
-                \node[startstop, right=0.9cm of c](x){exit};
-                \draw[flowarrow](c)-- node[left]{T}(b);
-                \draw[flowarrow](c)-- node[above]{F}(x);
-                \draw[flowarrow](b.east)--++(0.5,0)|-(c.east);
-            \end{tikzpicture}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \textbf{\texttt{do--while}} --- test \emph{after}, runs $\geq 1$ time:
-\begin{lstlisting}
-int i = 1;
-do {
-    printf("%d ", i);
-    i++;
-} while (i <= 5);
-\end{lstlisting}
-            \centering
-            \begin{tikzpicture}[font=\tiny, node distance=0.4cm]
-                \node[process, fill=cOrange!14](b){print i; i++};
-                \node[decision, below=of b] (c){i<=5?};
-                \node[startstop, right=0.9cm of c](x){exit};
-                \draw[flowarrow](b)--(c);
-                \draw[flowarrow](c)-- node[above]{F}(x);
-                \draw[flowarrow](c.west)--++(-0.6,0)|-(b.west) node[near end,left]{T};
-            \end{tikzpicture}
-        \end{column}
-    \end{columns}
-    \vspace{0.1cm}
-    \centering\footnotesize Both print \fbox{\texttt{1 2 3 4 5}}. Use \texttt{do--while} when the body must run at least once.
-\end{frame}
-
-\begin{frame}[fragile]{Loops: the \texttt{for} Loop}
-    \begin{columns}[T]
-        \begin{column}{0.55\textwidth}
-\begin{lstlisting}
-for (i = 1; i <= 5; i++) {
-    printf("%d ", i);
-}
-\end{lstlisting}
-            The three parts of a \texttt{for} loop:
-            \begin{enumerate}\small
-                \item \textbf{Init}: \texttt{i = 1} --- runs once at the start.
-                \item \textbf{Condition}: \texttt{i <= 5} --- checked before each pass.
-                \item \textbf{Update}: \texttt{i++} --- runs after each pass.
-            \end{enumerate}
-        \end{column}
-        \begin{column}{0.45\textwidth}
-            \centering
-            \begin{tikzpicture}[font=\scriptsize, node distance=0.5cm]
-                \node[startstop] (init){i = 1};
-                \node[decision, below=of init] (cond){i <= 5?};
-                \node[process, below=of cond, fill=cOrange!14] (body){print i};
-                \node[process, below=of body, fill=blue!10] (upd){i++};
-                \node[startstop, right=1.1cm of cond] (done){done};
-                \draw[flowarrow](init)--(cond);
-                \draw[flowarrow](cond)-- node[left,font=\tiny]{true}(body);
-                \draw[flowarrow](cond)-- node[above,font=\tiny]{false}(done);
-                \draw[flowarrow](body)--(upd);
-                \draw[flowarrow](upd.west)--++(-0.8,0)|-(cond.west);
-            \end{tikzpicture}
-        \end{column}
-    \end{columns}
-    \vspace{0.1cm}
-    \centering\footnotesize A \texttt{for} loop is a compact \texttt{while} loop --- best when you know the count in advance.
-\end{frame}
-
-\begin{frame}[fragile]{\texttt{break} and \texttt{continue}}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \textbf{\texttt{break}} --- exit the loop immediately.
-\begin{lstlisting}
-for (i = 1; i <= 10; i++) {
-    if (i == 4) break;
-    printf("%d ", i);
-}
-// prints: 1 2 3
-\end{lstlisting}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \textbf{\texttt{continue}} --- skip to the next iteration.
-\begin{lstlisting}
-for (i = 1; i <= 5; i++) {
-    if (i == 3) continue;
-    printf("%d ", i);
-}
-// prints: 1 2 4 5
-\end{lstlisting}
-        \end{column}
-    \end{columns}
-    \vspace{0.2cm}
-    \begin{block}{Remember}
-        \small \texttt{break} \textbf{leaves} the loop; \texttt{continue} \textbf{jumps to the next round}. Both also appear inside \texttt{while}/\texttt{do--while}; \texttt{break} additionally ends a \texttt{switch} case.
-    \end{block}
-\end{frame}
-
-% =================================================================
-\section{Writing Your First C Programs}
-% =================================================================
-\begin{frame}[fragile]{Your First C Program: ``Hello, World!''}
-\begin{lstlisting}
-#include <stdio.h>          /* bring in input/output library */
-
-int main(void)              /* execution starts here */
-{
-    printf("Hello, World!\n");   /* print a message */
-    return 0;                    /* 0 = success */
-}
-\end{lstlisting}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \begin{itemize}\small
-                \item We now know the skeleton, keywords, data types and I/O --- so we can write real programs.
-                \item \texttt{printf} prints text; \texttt{\textbackslash n} starts a new line.
-            \end{itemize}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \begin{itemize}\small
-                \item Every statement ends with a semicolon \texttt{;}
-                \item \texttt{return 0;} reports success to the OS.
-            \end{itemize}
-        \end{column}
-    \end{columns}
-    \vspace{0.1cm}
-    \centering\footnotesize\textbf{Output:}\; \fbox{\texttt{Hello, World!}}
-\end{frame}
-
-\begin{frame}{Worked Example 1: Adding Two Numbers}
-    \centering
-    \resizebox{0.98\textwidth}{!}{%
-    \begin{tikzpicture}[
-        every node/.style={font=\small},
-        cl/.style={anchor=north west, font=\ttfamily\small, inner sep=1.5pt},
-        ann/.style={-{Stealth[length=2mm]}, thick}
-    ]
-        % ---------- FLOWCHART (left) ----------
-        \node[startstop] (start) {START};
-        \node[io, below=0.4cm of start, fill=cOrange!20] (read) {READ a, b};
-        \node[process, below=0.4cm of read, minimum width=2.4cm, text width=2.4cm] (calc) {c = a + b};
-        \node[io, below=0.4cm of calc, fill=cGreen!20] (print) {PRINT c};
-        \node[startstop, below=0.4cm of print] (stop) {STOP};
-        \draw[flowarrow](start)--(read);
-        \draw[flowarrow](read)--(calc);
-        \draw[flowarrow](calc)--(print);
-        \draw[flowarrow](print)--(stop);
-
-        % ---------- CODE (right) ----------
-        \node[cl] (l1) at (5,1.0) {\#include <stdio.h>};
-        \node[cl] (l2) at (l1.south west) {int main(void)};
-        \node[cl] (l3) at (l2.south west) {\{};
-        \node[cl, text=cAccent] (l4) at (l3.south west) {~~~int a, b, c;};
-        \node[cl] (l5) at (l4.south west) {~~~scanf("\%d \%d", \&a, \&b);};
-        \node[cl] (l6) at (l5.south west) {~~~c = a + b;};
-        \node[cl] (l7) at (l6.south west) {~~~printf("\%d", c);};
-        \node[cl] (l8) at (l7.south west) {~~~return 0;};
-        \node[cl] (l9) at (l8.south west) {\}};
-        \begin{scope}[on background layer]
-            \node[draw, thick, rounded corners, fill=magenta!8, fit=(l1)(l9), inner sep=6pt] (box) {};
-        \end{scope}
-
-        % ---------- ANNOTATION ARROWS ----------
-        \draw[ann, blue]    (read.east)  -- (l5.west);
-        \draw[ann, cPurple] (calc.east)  -- (l6.west);
-        \draw[ann, cGreen]  (print.east) -- (l7.west);
-
-        % ---------- CALLOUT ----------
-        \node[draw, fill=white, rounded corners, font=\footnotesize, anchor=west]
-            (vd) at ($(box.east |- l4)+(0.5,0)$) {Variable Declaration};
-        \draw[ann] (vd.west) -- (l4.east);
-    \end{tikzpicture}}
-    \vspace{0.1cm}
-
-    \footnotesize Each flowchart step on the left maps to a coloured line of C code on the right.
-\end{frame}
-
-\begin{frame}{Worked Example 2: Even or Odd (\texttt{if--else})}
-    \centering
-    \resizebox{0.86\textwidth}{!}{%
-    \begin{tikzpicture}[
-        every node/.style={font=\small},
-        cl/.style={anchor=north west, font=\ttfamily\small, inner sep=1.5pt},
-        ann/.style={-{Stealth[length=2mm]}, thick}
-    ]
-        % ---------- FLOWCHART (left) ----------
-        \node[startstop] (start) {START};
-        \node[io, below=0.4cm of start, fill=cOrange!20] (read) {READ n};
-        \node[decision, below=0.5cm of read] (dec) {n \% 2 == 0?};
-        \node[process, below left=0.8cm and 0.1cm of dec, fill=cGreen!22] (even) {PRINT EVEN};
-        \node[process, below right=0.8cm and 0.1cm of dec, fill=cRed!20] (odd) {PRINT ODD};
-        \node[startstop, below=2.5cm of dec] (stop) {STOP};
-        \draw[flowarrow](start)--(read);
-        \draw[flowarrow](read)--(dec);
-        \draw[flowarrow](dec.west) -| node[near start, above, font=\scriptsize]{Yes} (even);
-        \draw[flowarrow](dec.east) -| node[near start, above, font=\scriptsize]{No} (odd);
-        \draw[flowarrow](even) |- (stop);
-        \draw[flowarrow](odd) |- (stop);
-
-        % ---------- CODE (right) ----------
-        \node[cl] (l1) at (5.5,1.4) {\#include <stdio.h>};
-        \node[cl] (l2) at (l1.south west) {int main(void)};
-        \node[cl] (l3) at (l2.south west) {\{};
-        \node[cl, text=cAccent] (l4) at (l3.south west) {~~~int n;};
-        \node[cl] (l5) at (l4.south west) {~~~scanf("\%d", \&n);};
-        \node[cl] (l6) at (l5.south west) {~~~if (n \% 2 == 0)};
-        \node[cl, text=cGreen] (l7) at (l6.south west) {~~~~~~printf("EVEN");};
-        \node[cl] (l8) at (l7.south west) {~~~else};
-        \node[cl, text=cRed] (l9) at (l8.south west) {~~~~~~printf("ODD");};
-        \node[cl] (l10) at (l9.south west) {~~~return 0;};
-        \node[cl] (l11) at (l10.south west) {\}};
-        \begin{scope}[on background layer]
-            \node[draw, thick, rounded corners, fill=magenta!8, fit=(l1)(l11), inner sep=6pt] (box) {};
-        \end{scope}
-
-        % ---------- ANNOTATION ARROWS ----------
-        \draw[ann, blue]    (read.east) -- (l5.west);
-        \draw[ann, cPurple] (dec.east)  to[out=0, in=180] (l6.west);
-        % ---------- CALLOUT ----------
-        \node[draw, fill=white, rounded corners, font=\footnotesize, anchor=west]
-            (vd) at ($(box.east |- l4)+(0.5,0)$) {Variable Declaration};
-        \draw[ann] (vd.west) -- (l4.east);
-    \end{tikzpicture}}
-    \vspace{0.05cm}
-
-    \footnotesize The \textcolor{cGreen}{green} and \textcolor{cRed}{red} branches match the two \texttt{printf} lines. A number is even when \texttt{n \% 2} is \texttt{0}.
-\end{frame}
-
-\begin{frame}[fragile]{Worked Example 3 --- Sum of 1 to N (a \texttt{for} loop)}
-    \begin{columns}[T]
-        \begin{column}{0.62\textwidth}
-\begin{lstlisting}
-#include <stdio.h>
-
-int main(void)
-{
-    int n, i, sum = 0;
-
-    printf("Enter N: ");
-    scanf("%d", &n);
-
-    for (i = 1; i <= n; i++)
-        sum += i;   /* sum = sum + i */
-
-    printf("Sum 1..%d = %d\n", n, sum);
-    return 0;
-}
-\end{lstlisting}
-        \end{column}
-        \begin{column}{0.38\textwidth}
-            \begin{block}{Trace for N = 5}
-                \small
-                \begin{tabular}{cc}
-                    \texttt{i} & \texttt{sum} \\ \hline
-                    1 & 1  \\
-                    2 & 3  \\
-                    3 & 6  \\
-                    4 & 10 \\
-                    5 & 15 \\
-                \end{tabular}
-            \end{block}
-            \centering\footnotesize Output:\\ \fbox{\texttt{Sum 1..5 = 15}}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}[fragile]{Worked Example 4 --- Simple Calculator (\texttt{switch})}
-\begin{lstlisting}
-#include <stdio.h>
-int main(void) {
-    float a, b;  char op;
-    printf("Enter: a op b  (e.g. 6 * 7): ");
-    scanf("%f %c %f", &a, &op, &b);
-
-    switch (op) {
-        case '+': printf("= %.2f\n", a + b); break;
-        case '-': printf("= %.2f\n", a - b); break;
-        case '*': printf("= %.2f\n", a * b); break;
-        case '/':
-            if (b != 0) printf("= %.2f\n", a / b);
-            else        printf("Cannot divide by zero!\n");
-            break;
-        default:  printf("Unknown operator\n");
-    }
-    return 0;
-}
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}{Summary \& What Comes Next}
-    \begin{columns}[T]
-        \begin{column}{0.5\textwidth}
-            \begin{block}{You now know}
-                \begin{itemize}\small
-                    \item How a computer is organized and what an OS does.
-                    \item Machine / assembly / high-level languages.
-                    \item How a C program is written, compiled, and run.
-                    \item Data types, operators, and control structures.
-                    \item Formatted input/output with \texttt{printf}/\texttt{scanf}.
-                \end{itemize}
-            \end{block}
-        \end{column}
-        \begin{column}{0.5\textwidth}
-            \begin{block}{Practice makes perfect}
-                \begin{itemize}\small
-                    \item Type and run every example yourself.
-                    \item Deliberately make errors --- read the messages.
-                    \item Modify examples: change values, add features.
-                \end{itemize}
-            \end{block}
-            \begin{block}{Coming up}
-                \small Functions, arrays, strings, and pointers.
-            \end{block}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-    \centering
-    \Huge Thank You
-    \vspace{0.5cm}
-
-    \normalsize Questions?
-\end{frame}
-
-%------------------------------------------------
+	
+	%------------------------------------------------
+	\begin{frame}
+		\titlepage
+	\end{frame}
+	
+	%------------------------------------------------
+	\begin{frame}{Outline}
+		\small
+		\begin{columns}[T,onlytextwidth]
+			\hspace{0.8cm}% shift the first column to the right
+			\begin{column}{0.49\textwidth}
+				\tableofcontents[hideallsubsections, sections={1-7}]
+			\end{column}
+			\hspace{0.8cm}% wider gap between the two columns
+			\begin{column}{0.34\textwidth}
+				\tableofcontents[hideallsubsections, sections={8-13}]
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	% =================================================================
+	\section{Introduction to Computer Organization}
+	% =================================================================
+	\begin{frame}{What is a Computer?}
+		\begin{block}{Definition}
+			A \textbf{computer} is an electronic machine that accepts \textbf{data} (input),
+			processes it according to a set of \textbf{instructions} (a program), and produces
+			useful \textbf{information} (output).
+		\end{block}
+		\vspace{0.3cm}
+		\begin{columns}
+			\begin{column}{0.6\textwidth}
+				\begin{itemize}
+					\item It follows the simple cycle:
+					\[
+					\textbf{INPUT} \;\rightarrow\; \textbf{PROCESS} \;\rightarrow\; \textbf{OUTPUT}
+					\]
+					\item It cannot ``think'' --- it only does exactly what the program tells it, very fast and without mistakes.
+					\item \emph{Programming} is the art of writing those instructions.
+				\end{itemize}
+			\end{column}
+			\begin{column}{0.4\textwidth}
+				\centering
+				\begin{tikzpicture}[node distance=0.9cm]
+					\node[io, fill=cOrange!20] (in) {Input};
+					\node[process, below=of in] (proc) {Process (CPU)};
+					\node[io, below=of proc, fill=cGreen!20] (out) {Output};
+					\draw[flowarrow] (in) -- (proc);
+					\draw[flowarrow] (proc) -- (out);
+				\end{tikzpicture}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}{Computer Organization: The Building Blocks}
+		\centering
+		\begin{tikzpicture}[every node/.style={font=\small}, node distance=1.1cm]
+			% Input
+			\node[io, fill=cOrange!25] (input) {Input Unit\\ \tiny(keyboard, mouse)};
+			% CPU box contents
+			\node[process, right=2.2cm of input, fill=blue!12] (cu) {Control Unit (CU)};
+			\node[process, below=0.7cm of cu, fill=blue!12] (alu) {Arithmetic \& Logic Unit (ALU)};
+			% memory
+			\node[process, right=2.2cm of cu, fill=cPurple!15] (mem) {Memory Unit\\ \tiny(RAM / storage)};
+			% output
+			\node[io, below=0.7cm of mem, fill=cGreen!25] (output) {Output Unit\\ \tiny(monitor, printer)};
+			
+			% CPU dashed box
+			\begin{scope}[on background layer]
+				\node[draw=cAccent, thick, dashed, rounded corners, fit=(cu)(alu), inner sep=8pt, label={[cAccent]above:\textbf{CPU (Processor)}}] (cpu) {};
+			\end{scope}
+			
+			% arrows
+			\draw[flowarrow] (input) -- (cu.west);
+			\draw[flowarrow] (cu) -- (alu);
+			\draw[flowarrow] (cu.east) -- (mem.west);
+			\draw[flowarrow] (mem.east) .. controls +(1,-0.6) and +(1,0.6) .. (output.east);
+			\draw[flowarrow, cAccent] (alu.east) -- ++(0.4,0) |- (output.west);
+		\end{tikzpicture}
+		\vspace{0.2cm}
+		\begin{itemize}\small
+			\item \textbf{CPU} = ``brain''. \textbf{CU} directs traffic; \textbf{ALU} does the maths \& comparisons.
+			\item \textbf{Memory} temporarily holds data \& instructions the CPU is working on.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Hardware vs.\ Software \& Types of Memory}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\begin{block}{Hardware}
+					The physical parts you can \emph{touch} --- CPU, RAM, hard disk, keyboard, monitor.
+				\end{block}
+				\begin{block}{Software}
+					The \emph{programs} (instructions) that tell the hardware what to do --- e.g.\ Windows, a game, a C program.
+				\end{block}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\begin{block}{Primary Memory (fast, temporary)}
+					\begin{itemize}\small
+						\item \textbf{RAM} --- working memory, lost when power is off (volatile).
+						\item \textbf{ROM} --- read-only, permanent start-up instructions.
+					\end{itemize}
+				\end{block}
+				\begin{block}{Secondary Memory (slow, permanent)}
+					\begin{itemize}\small
+						\item Hard disk, SSD, USB drive --- stores files even without power.
+					\end{itemize}
+				\end{block}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	% =================================================================
+	\section{Evolution of Operating Systems}
+	% =================================================================
+	\begin{frame}{What is an Operating System (OS)?}
+		\begin{block}{Operating System}
+			An OS is the \textbf{master software} that manages the hardware and gives other programs
+			a place to run. It is the bridge between \textbf{you}, the \textbf{programs}, and the \textbf{hardware}.
+		\end{block}
+		\centering
+		\begin{tikzpicture}[layer/.style={rectangle, draw=black, font=\small, minimum height=0.85cm, minimum width=9cm, text centered}]
+			\node[layer, fill=cGreen!20] (user)  {User};
+			\node[layer, fill=blue!12, below=0.22cm of user] (app)   {Application Software (browser, editor, your C program)};
+			\node[layer, fill=cOrange!25, below=0.22cm of app] (os)    {Operating System (Windows / Linux / macOS)};
+			\node[layer, fill=cPurple!18, below=0.22cm of os]  (hw)    {Hardware (CPU, Memory, Devices)};
+		\end{tikzpicture}
+		\vspace{0.15cm}
+		
+		\footnotesize Examples of tasks: managing memory, running programs, handling files, controlling devices.
+	\end{frame}
+	
+	\begin{frame}{Evolution of Operating Systems: A Timeline}
+		\centering
+		\resizebox{\textwidth}{!}{%
+			\begin{tikzpicture}[every node/.style={font=\scriptsize}]
+				% timeline
+				\draw[flowarrow, thick] (0,0) -- (14.5,0);
+				\foreach \x/\yr in {1/1950s, 4/1960s, 7/1970s, 10/1980s, 13/2000s+} {
+					\draw (\x,0.1) -- (\x,-0.1);
+					\node[below] at (\x,-0.15) {\textbf{\yr}};
+				}
+				% milestones (spaced 3 units apart -> larger gap between boxes)
+				\node[process, fill=blue!8,   text width=2.2cm, above=0.6cm] at (1,0)  {\textbf{Batch}\\ jobs run one after another};
+				\node[process, fill=cGreen!12,text width=2.2cm, above=0.6cm] at (4,0)  {\textbf{Multi-\\programming} many jobs share CPU};
+				\node[process, fill=cOrange!15,text width=2.2cm, above=0.6cm] at (7,0) {\textbf{Time-\\sharing} many users at once};
+				\node[process, fill=cPurple!12,text width=2.2cm, above=0.6cm] at (10,0){\textbf{Personal / GUI} desktop icons \& mouse};
+				\node[process, fill=cRed!12,  text width=2.2cm, above=0.6cm] at (13,0) {\textbf{Mobile \& Cloud} phones, distributed};
+		\end{tikzpicture}}
+		\vspace{0.4cm}
+		\begin{itemize}\small
+			\item Each stage made the computer \textbf{easier to use} and able to do \textbf{more at once}.
+			\item Modern OSes let many programs and users run \emph{simultaneously} on the same machine.
+		\end{itemize}
+	\end{frame}
+	
+	% =================================================================
+	\section{Machine, Assembly \& High-Level Languages}
+	% =================================================================
+	\begin{frame}{Levels of Programming Languages}
+		\centering
+		\begin{tikzpicture}[every node/.style={font=\small, text centered},
+			lang/.style={rectangle, draw=black, minimum width=9cm, minimum height=1.1cm, text width=8.4cm, align=center}]
+			\node[lang, fill=cGreen!22] (hl)
+			{\textbf{High-Level Language} (C, Python, Java) --- close to human language};
+			\node[lang, fill=cOrange!25, below=0.3cm of hl] (asm)
+			{\textbf{Assembly Language} (MOV, ADD) --- short mnemonic codes};
+			\node[lang, fill=cPurple!18, below=0.3cm of asm] (mc)
+			{\textbf{Machine Language} (1010 0111) --- only 0s and 1s, what the CPU runs};
+			\draw[flowarrow, cAccent, thick] ($(hl.west)+(-0.9,0)$) -- ($(mc.west)+(-0.9,0)$)
+			node[midway, left, rotate=90, anchor=south, font=\scriptsize] {harder for humans $\rightarrow$};
+			\draw[flowarrow, cRed, thick] ($(mc.east)+(0.9,0)$) -- ($(hl.east)+(0.9,0)$)
+			node[midway, right, rotate=90, anchor=north, font=\scriptsize] {$\leftarrow$ easier for humans};
+		\end{tikzpicture}
+		\vspace{0.3cm}
+		\begin{itemize}\small
+			\item The CPU understands \textbf{only} machine language (binary).
+			\item We write in a high-level language; a \textbf{translator} converts it to machine code.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Comparing the Three Levels}
+		\renewcommand{\arraystretch}{1.4}
+		\centering
+		\begin{tabular}{@{}p{2.4cm}p{4.0cm}p{5.0cm}@{}}
+			\toprule
+			\textbf{Feature} & \textbf{Human friendliness} & \textbf{Example} \\
+			 &  & \textbf{(add 2 numbers)} \\
+			\midrule
+			Machine   & Very hard (all 0/1)          & \texttt{10110000 01100001} \\
+			Assembly  & Hard (mnemonics)             & \texttt{MOV AL, 61$^\text{H}$}\quad \texttt{ADD AL, BL} \\
+			High-level& Easy (English-like)          & \texttt{c = a + b;} \\
+			\bottomrule
+		\end{tabular}
+		\vspace{0.4cm}
+		\begin{block}{Key idea}
+			High-level languages like \textbf{C} let us write \emph{one} readable line instead of many cryptic machine instructions --- and the same C program can run on many different machines.
+		\end{block}
+	\end{frame}
+	
+	% =================================================================
+	\section{Software \& Hardware Trends; Programming Methodologies}
+	% =================================================================
+	\begin{frame}{Key Software \& Hardware Trends}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\begin{block}{Hardware trends}
+					\begin{itemize}\small
+						\item \textbf{Moore's Law}: transistor count roughly doubles $\sim$every 2 years $\rightarrow$ faster, cheaper chips.
+						\item Multi-core CPUs, GPUs.
+						\item Smaller \& mobile: phones, embedded, IoT.
+						\item Cloud data-centres provide computing ``on tap''.
+					\end{itemize}
+				\end{block}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\begin{block}{Software trends}
+					\begin{itemize}\small
+						\item Open-source software \& reusable libraries.
+						\item Mobile apps and web applications.
+						\item Artificial Intelligence \& data science.
+						\item Higher-level, safer languages built \emph{on top of} C.
+					\end{itemize}
+				\end{block}
+			\end{column}
+		\end{columns}
+		\vspace{0.2cm}
+		\footnotesize\centering
+		Hardware gets faster and cheaper; software gets smarter and more connected --- and \textbf{C} sits underneath much of it.
+	\end{frame}
+	
+	\begin{frame}{Procedural vs.\ Object-Oriented Programming}
+		\vspace*{-0.5cm}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\begin{block}{Procedural (e.g.\ C)}
+					Program = a sequence of \textbf{procedures / functions} that operate on data.
+					\begin{itemize}\small
+						\item Think: a \emph{recipe} --- do step 1, then 2, then 3.
+						\item Data and functions are separate.
+					\end{itemize}
+				\end{block}
+				\vspace*{0.3cm}
+				\centering
+				\begin{tikzpicture}[font=\scriptsize, node distance=0.4cm]
+					\node[process, fill=blue!10, minimum width=1.4cm] (f1){func 1};
+%					\node[process, fill=blue!10, minimum width=1.4cm, right=of f1] (f2){func 2};
+					\node[ process, fill=blue!10, minimum width=1.4cm, right=0.8cm of f1 ] (f2) {func 2};
+					\node[ process, fill=blue!10, minimum width=1.4cm, below=0.8cm of f2 ] (f3) {func 3};
+					\draw[flowarrow](f1)--(f2); \draw[flowarrow](f2)--(f3);
+				\end{tikzpicture}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\begin{block}{Object-Oriented (e.g.\ C++, Python, Java)}
+					Program = a set of \textbf{objects} that bundle data \emph{and} the functions acting on it.
+					\begin{itemize}\small
+						\item Think: real-world \emph{objects} (a Car that can \texttt{start()}, \texttt{stop()}).
+						\item Ideas: class, object, inheritance.
+					\end{itemize}
+				\end{block}
+				\vspace*{0.2cm}
+				\centering
+				\hspace*{1.0cm}
+				\begin{tikzpicture}[font=\scriptsize]
+					\node[
+					draw,
+					rounded corners,
+					align=left,
+					fill=cGreen!14,
+					text width=4cm,
+					minimum height=2.0cm,
+					inner sep=6pt
+					] {
+						\textbf{CLASS Car}\\
+						\quad\quad DATA: speed\\
+						\quad\quad METHODS:\\
+						\qquad\qquad\qquad start()\\
+						\qquad\qquad\qquad accelerate()\\
+						\qquad\qquad\qquad stop()\\
+						\textbf{END CLASS}
+					};
+				\end{tikzpicture}
+			\end{column}
+		\end{columns}
+		\vspace{0.3cm}
+		\footnotesize\centering In this course we focus on the \textbf{procedural} style using \textbf{C}.
+	\end{frame}
+	
+	% =================================================================
+	\section{Program Development in C}
+	% =================================================================
+	\begin{frame}{Why C?}
+		\begin{columns}[T]
+			\begin{column}{0.55\textwidth}
+				\begin{itemize}
+					\item Created by \textbf{Dennis Ritchie} at Bell Labs (early 1970s).
+					\item \textbf{Powerful} yet \textbf{small} --- close to the hardware but readable.
+					\item The ``mother language'': Linux, databases, and parts of Windows are written in C.
+					\item Learning C teaches you how a computer \emph{really} works.
+				\end{itemize}
+			\end{column}
+			\begin{column}{0.45\textwidth}
+				\begin{block}{C is a great first language because}
+					\begin{itemize}\small
+						\item It is \textbf{fast}.
+						\item It is used \textbf{everywhere}.
+						\item Its ideas carry over to C++, Java, Python, \dots
+					\end{itemize}
+				\end{block}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}{From Source Code to Running Program}
+		\centering
+		\begin{tikzpicture}[every node/.style={font=\scriptsize},
+			tool/.style={rectangle, draw=black, rounded corners, minimum width=2.0cm, minimum height=0.8cm, align=center, fill=blue!10},
+			art/.style ={rectangle, draw=black, dashed, minimum width=2.0cm, minimum height=0.8cm, align=center, fill=cGreen!14}]
+			% top row: tools
+			\node[tool] (edit) {Text Editor};
+			\node[tool, right=1.3cm of edit] (comp) {Compiler};
+			\node[tool, right=1.3cm of comp] (link) {Linker};
+			\node[tool, right=1.3cm of link] (run)  {Loader / Run};
+			% bottom row: artifacts each tool produces
+			\node[art, below=0.9cm of edit] (src) {\texttt{program.c}\\ (source)};
+			\node[art, below=0.9cm of comp] (obj) {\texttt{program.o}\\ (object)};
+			\node[art, below=0.9cm of link] (exe) {\texttt{a.out / .exe}\\ (executable)};
+			\node[art, below=0.9cm of run]  (res) {Output\\ (results)};
+			% library feeding the linker
+			\node[cylinder, draw=black, shape border rotate=90, aspect=0.3, minimum width=1.2cm, minimum height=0.9cm, fill=cOrange!20, above=0.7cm of link] (lib) {Library};
+			% top control-flow chain
+			\draw[flowarrow] (edit) -- (comp);
+			\draw[flowarrow] (comp) -- (link);
+			\draw[flowarrow] (link) -- (run);
+			% produces (down)
+			\draw[flowarrow, gray] (edit) -- (src);
+			\draw[flowarrow, gray] (comp) -- (obj);
+			\draw[flowarrow, gray] (link) -- (exe);
+			\draw[flowarrow, gray] (run)  -- (res);
+			\draw[flowarrow, cOrange!70!black] (lib) -- (link);
+		\end{tikzpicture}
+		\vspace{0.25cm}
+		\begin{columns}[T]
+			\begin{column}{0.55\textwidth}
+				\begin{block}{One command does it all (using GCC)}
+					\small \texttt{gcc\ program.c\ -o\ program}\\ then \quad \texttt{./program}
+				\end{block}
+			\end{column}
+			\begin{column}{0.45\textwidth}
+				\footnotesize Each step's output feeds the next. If the compiler reports \textbf{errors}, fix them and compile again --- this ``edit\;$\rightarrow$\;compile\;$\rightarrow$\;run'' loop is normal!
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}[plain]
+		\centering
+		\begin{figure}
+			\includegraphics[scale=0.8]{./figures/program\_execuation\_steps.pdf}
+		\end{figure}
+	\end{frame}
+	
+	\begin{frame}{Translators: Compiler vs.\ Interpreter}
+		\vspace*{-0.3cm}
+		\begin{block}{Why we need a translator}
+			A \textbf{translator} converts our high-level C into machine code. The two main kinds are the \textbf{compiler} and the \textbf{interpreter}.
+		\end{block}
+		\vspace{0.1cm}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\centering\textbf{Compiler} (C uses this)\\[2pt]
+				\resizebox{0.92\linewidth}{!}{%
+					\begin{tikzpicture}[every node/.style={font=\scriptsize}, node distance=0.4cm,
+						mini/.style={minimum width=1.5cm, minimum height=0.7cm}]
+						\node[io, mini, fill=cOrange!20] (s){Whole\\ source};
+						\node[process, mini, right=of s] (c){Compiler};
+						\node[startstop, mini, right=of c, fill=cGreen!22] (e){Executable};
+						\draw[flowarrow](s)--(c); \draw[flowarrow](c)--(e);
+				\end{tikzpicture}}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\centering\textbf{Interpreter} (e.g.\ Python)\\[2pt]
+				\resizebox{0.92\linewidth}{!}{%
+					\begin{tikzpicture}[every node/.style={font=\scriptsize}, node distance=0.4cm,
+						mini/.style={minimum width=1.5cm, minimum height=0.7cm}]
+						\node[io, mini, fill=cOrange!20] (s){One line};
+						\node[process, mini, right=of s] (c){Interpreter};
+						\node[io, mini, right=of c, fill=cGreen!20] (e){Run it};
+						\draw[flowarrow](s)--(c); \draw[flowarrow](c)--(e);
+						\draw[flowarrow] (e.south) -- ++(0,-0.4) -| (s.south);
+				\end{tikzpicture}}
+			\end{column}
+		\end{columns}
+		\vspace{0.4cm}
+		{\small
+			\renewcommand{\arraystretch}{1.15}
+			\hspace*{2.5cm}
+			\centering
+			\begin{tabular}{@{}p{5.0cm}p{5.3cm}@{}}
+				\toprule
+				\textbf{Compiler} & \textbf{Interpreter} \\
+				\midrule
+				Translates the \emph{whole} program at once & Translates \emph{line by line} \\
+				Produces a separate executable file & No separate executable file \\
+				Faster; all errors reported together & Slower; errors reported line-wise \\
+				\bottomrule
+		\end{tabular}}
+	\end{frame}
+	
+	% =================================================================
+	\section{Structured Programming: Algorithms \& Pseudo-code}
+	% =================================================================
+	\begin{frame}{Steps in Problem Solving}
+		\begin{block}{Before writing code, plan the solution}
+			Good programmers think first, then type. Solving a problem on a computer follows a clear set of steps.
+		\end{block}
+		\centering
+		\begin{tikzpicture}[every node/.style={font=\scriptsize}, node distance=0.55cm]
+			\node[process, minimum width=2.0cm, text width=2.0cm] (p1){1. Define the problem};
+			\node[process, right=of p1, minimum width=2.0cm, text width=2.0cm] (p2){2. Analyse (inputs/outputs)};
+			\node[process, right=of p2, minimum width=2.0cm, text width=2.0cm] (p3){3. Design algorithm / flowchart};
+			\node[process, below=0.9cm of p3, minimum width=2.0cm, text width=2.0cm] (p4){4. Write the code};
+			\node[process, left=of p4, minimum width=2.0cm, text width=2.0cm] (p5){5. Test \& debug};
+			\node[process, left=of p5, minimum width=2.0cm, text width=2.0cm] (p6){6. Document \& maintain};
+			\draw[flowarrow](p1)--(p2); \draw[flowarrow](p2)--(p3);
+			\draw[flowarrow](p3)--(p4); \draw[flowarrow](p4)--(p5); \draw[flowarrow](p5)--(p6);
+		\end{tikzpicture}
+		\vspace{0.15cm}
+		\begin{itemize}\small
+			\item \textbf{Analysis} asks: what are the \emph{inputs}, the \emph{outputs}, and the \emph{constraints}?
+			\item Only step 4 is actual coding --- most of the thinking happens \emph{before} it.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Structured Programming}
+		\begin{block}{Idea}
+			Build every program from just \textbf{three} basic control structures. This keeps code
+			clear, correct, and easy to read (no ``spaghetti'' jumps).
+		\end{block}
+		\vspace{0.2cm}
+		\begin{columns}[T]
+			% ---- 1. Sequence ----
+			\begin{column}{0.3\textwidth}
+				\centering \textbf{1. Sequence}\\ \footnotesize(do in order)\\[6pt]
+				\begin{tikzpicture}[font=\scriptsize, node distance=0.5cm]
+					\node[process, fill=blue!10, minimum width=1.5cm] (s1){Step A};
+					\node[process, fill=blue!10, minimum width=1.5cm, below=of s1] (s2){Step B};
+					\draw[flowarrow](s1)--(s2);
+				\end{tikzpicture}
+			\end{column}
+			% ---- 2. Selection ----
+			\begin{column}{0.4\textwidth}
+				\centering \textbf{2. Selection}\\ \footnotesize(choose a path)\\[6pt]
+				\begin{tikzpicture}[font=\scriptsize, node distance=0.4cm,
+					dsm/.style={diamond, aspect=1.6, draw=black, fill=cGreen!18, minimum width=1.6cm, inner sep=0pt}]
+					\node[dsm] (d){cond?};
+					\node[process, fill=cGreen!12, below left=0.5cm and 0cm of d, minimum width=0.9cm, text width=0.7cm](y){yes};
+					\node[process, fill=cRed!12, below right=0.5cm and 0cm of d, minimum width=0.9cm, text width=0.6cm](n){no};
+					\draw[flowarrow](d.west) -| (y);
+					\draw[flowarrow](d.east) -| (n);
+				\end{tikzpicture}
+			\end{column}
+			% ---- 3. Repetition ----
+			\begin{column}{0.28\textwidth}
+				\centering \textbf{3. Repetition}\\ \footnotesize(loop)\\[6pt]
+				\begin{tikzpicture}[font=\scriptsize, node distance=0.5cm,
+					dsm/.style={diamond, aspect=1.6, draw=black, fill=cGreen!18, minimum width=1.6cm, inner sep=0pt}]
+					\node[dsm] (l){cond?};
+					\node[process, fill=cOrange!14, below=0.6cm of l, minimum width=1.3cm](body){body};
+					\draw[flowarrow](l) -- node[right,font=\tiny]{true} (body);
+					\draw[flowarrow](body.east) -- ++(0.35,0) |- (l.east);
+				\end{tikzpicture}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}[fragile]{Algorithm and Pseudo-code}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\begin{block}{Algorithm}
+					A finite, step-by-step procedure to solve a problem --- \emph{before} writing any code.
+				\end{block}
+				\textbf{Algorithm: add two numbers}
+				\begin{enumerate}\small
+					\item Start
+					\item Read two numbers \texttt{a} and \texttt{b}
+					\item Compute \texttt{sum = a + b}
+					\item Display \texttt{sum}
+					\item Stop
+				\end{enumerate}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\begin{block}{Pseudo-code}
+					An informal, English-like sketch of the code --- language independent.
+				\end{block}
+				\begin{semiverbatim}\small
+					BEGIN
+						INPUT a, b
+						sum \(\leftarrow\) a + b
+						OUTPUT sum
+					END
+				\end{semiverbatim}
+				\vspace{0.1cm}
+				\footnotesize Good pseudo-code translates almost line-by-line into C.
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}{Characteristics of a Good Algorithm}
+		\begin{columns}[T]
+			\begin{column}{0.52\textwidth}
+				\begin{itemize}
+					\item \textbf{Input} --- zero or more well-defined inputs.
+					\item \textbf{Output} --- at least one useful output.
+					\item \textbf{Definiteness} --- every step is precise and unambiguous.
+					\item \textbf{Finiteness} --- it must end after a finite number of steps.
+					\item \textbf{Effectiveness} --- each step is basic enough to be carried out.
+				\end{itemize}
+			\end{column}
+			\begin{column}{0.48\textwidth}
+				\begin{block}{Rule of thumb}
+					\small If a stranger can follow your steps and get the \emph{same} correct answer every time, it is a good algorithm.
+				\end{block}
+				\begin{block}{Why it matters}
+					\small A clear algorithm makes the C code almost write itself --- and makes bugs easy to spot.
+				\end{block}
+			\end{column}
+		\end{columns}
+	\end{frame}
+
+	\begin{frame}{Flowcharts}
+		\vspace*{-0.4cm}
+		\begin{columns}[T,onlytextwidth]
+			
+			% =========================================================
+			% LEFT COLUMN -- INTRODUCTION
+			% =========================================================
+			
+			\begin{column}{0.70\textwidth}
+				
+				\begin{itemize}
+					\item A flowchart is a graphical representation of an algorithm, using standard symbols to illustrate the sequence of operations and flow of control.
+					
+					\item Programmers often use it as a program-planning tool to solve a problem.
+					
+					\item It makes use of symbols that are connected among them to indicate
+					the flow of information and processing.
+					
+					\item The process of drawing a flowchart for an algorithm is known as
+					``flowcharting''.
+					\item \textbf{Algorithm: add two numbers}
+						\begin{enumerate}\small
+							\item Start
+							\item Read two numbers \texttt{`a'} and \texttt{`b'}
+							\item Compute \texttt{sum = a + b}
+							\item Display \texttt{sum}
+							\item Stop
+						\end{enumerate}
+				\end{itemize}
+				
+			\end{column}
+			
+			
+			% =========================================================
+			% RIGHT COLUMN -- FLOWCHART
+			% =========================================================
+			
+			\begin{column}{0.30\textwidth}
+				\centering
+				\vspace{4mm}
+				
+				\begin{tikzpicture}[remember picture, overlay, scale=0.70,]
+					
+					\node at ([xshift=75mm,yshift=-4mm]current page.center)
+					{
+						\begin{tikzpicture}[
+							transform shape,
+							every node/.style={
+								font=\scriptsize,
+								align=center
+							},
+							node distance=0.8cm
+							]
+							
+							% -------------------------------------------------
+							% Nodes
+							% -------------------------------------------------
+							
+							\node[startstop] (start)
+							{Start};
+							
+							\node[
+							io,
+							below=of start,
+							fill=cOrange!20
+							] (read)
+							{Read $\text{a},\text{b}$};
+							
+							\node[
+							process,
+							below=of read,
+							minimum width=1.8cm,
+							text width=1.8cm
+							] (calc)
+							{sum = $\text{a}+\text{b}$};
+							
+							\node[
+							io,
+							below=of calc,
+							fill=cGreen!20
+							] (print)
+							{Print sum};
+							
+							\node[
+							startstop,
+							below=of print
+							] (stop)
+							{Stop};
+							
+							% -------------------------------------------------
+							% Arrows
+							% -------------------------------------------------
+							
+							\draw[flowarrow] (start) -- (read);
+							\draw[flowarrow] (read) -- (calc);
+							\draw[flowarrow] (calc) -- (print);
+							\draw[flowarrow] (print) -- (stop);
+							
+						\end{tikzpicture}
+					};
+					
+				\end{tikzpicture}
+
+			\end{column}
+			
+		\end{columns}
+		
+	\end{frame}
+	
+	\begin{frame}{Flowchart Symbols You Should Know}
+		\centering
+		\begin{tikzpicture}[font=\sffamily]
+			
+			% =========================================================
+			% 1. START / END
+			% =========================================================
+			
+			% Symbol
+			\draw[
+			black!100,
+			line width=1pt,
+			rounded corners=3pt
+			]
+			(4.82,6.05) rectangle (5.82,6.58);
+			
+			% Description
+			\node[
+			anchor=west,
+			font=\fontsize{11}{13}\selectfont
+			] at (6.42,6.315)
+			{Start or end of the program};
+			
+			
+			% =========================================================
+			% 2. PROCESS
+			% =========================================================
+			
+			% Symbol
+			\draw[
+			black!75,
+			line width=1pt
+			]
+			(4.82,4.72) rectangle (5.82,5.25);
+			
+			% Description
+			\node[
+			anchor=west,
+			align=left,
+			font=\fontsize{11}{13}\selectfont
+			] at (6.42,4.985)
+			{Computational steps or processing\\
+				function of a program};
+			
+			
+			% =========================================================
+			% 3. INPUT / OUTPUT
+			% =========================================================
+			
+			% Parallelogram
+			\draw[
+			black!75,
+			line width=1pt
+			]
+			(4.75,3.62) --
+			(5.85,3.62) --
+			(6.05,4.15) --
+			(4.95,4.15) --
+			cycle;
+			
+			% Description
+			\node[
+			anchor=west,
+			font=\fontsize{11}{13}\selectfont
+			] at (6.42,3.885)
+			{Input or output operation};
+			
+			
+			% =========================================================
+			% 4. DECISION
+			% =========================================================
+			
+			% Diamond
+			\draw[
+			black!75,
+			line width=1pt
+			]
+			(5.35,3.00) --
+			(6.05,2.54) --
+			(5.35,2.08) --
+			(4.65,2.54) --
+			cycle;
+			
+			% Description
+			\node[
+			anchor=west,
+			font=\fontsize{11}{13}\selectfont
+			] at (6.42,2.54)
+			{Decision making and branching};
+			
+			
+			% =========================================================
+			% 5. CONNECTOR
+			% =========================================================
+			
+			% Circle
+			\draw[
+			black!75,
+			line width=1pt
+			]
+			(5.35,1.20) circle (0.40);
+			
+			% Description
+			\node[
+			anchor=west,
+			align=left,
+			font=\fontsize{11}{13}\selectfont
+			] at (6.42,1.12)
+			{Connector or joining of two parts\\
+				of program};
+			
+		\end{tikzpicture}
+	\end{frame}
+	
+	\begin{frame}{Flowcharts Examples}
+		\vspace*{-0.4cm}
+		\begin{columns}[T,onlytextwidth]
+			
+			% =========================================================
+			% LEFT COLUMN -- INTRODUCTION
+			% =========================================================
+			
+			\begin{column}{0.70\textwidth}
+				
+				\begin{enumerate}\small
+					\item START
+					\item READ two numbers \texttt{`num\_1'} and \texttt{`num\_2'}
+					\item Compare \texttt{num\_1} and \texttt{num\_2}
+					\item If \texttt{num\_1 > num\_2}\\ \qquad DISPLAY \texttt{num\_1}
+					\item Otherwise\\ \qquad DISPLAY \texttt{num\_2}
+					\item STOP
+				\end{enumerate}
+				
+			\end{column}
+			
+			
+			% =========================================================
+			% RIGHT COLUMN -- FLOWCHART
+			% =========================================================
+			
+			\begin{column}{0.30\textwidth}
+				\centering
+				\begin{tikzpicture}[remember picture, overlay, scale=0.70,]
+					
+					\node at ([xshift=55mm,yshift=-4mm]current page.center)
+					{
+						\begin{tikzpicture}[
+							scale=0.6,
+							transform shape,
+							>=Stealth,
+							every node/.style={
+								font=\small,
+								align=center
+							},
+							startstop/.style={
+								ellipse,
+								draw=black,
+								line width=0.8pt,
+								minimum width=22mm,
+								minimum height=8mm,
+								text=black
+							},
+							io/.style={
+								trapezium,
+								trapezium left angle=75,
+								trapezium right angle=105,
+								draw=black,
+								line width=0.8pt,
+								minimum width=24mm,
+								minimum height=9mm,
+								text=black
+							},
+							decision/.style={
+								diamond,
+								draw=black,
+								line width=0.8pt,
+								aspect=2,
+								minimum width=20mm,
+								minimum height=18mm,
+								inner sep=1pt,
+								text=black,
+								font=\scriptsize
+							},
+							flow/.style={
+								->,
+								line width=0.8pt
+							}
+							]
+							
+							% -------------------------------------------------
+							% Nodes
+							% -------------------------------------------------
+							
+							\node[startstop] (start) {START};
+							
+							\node[io, below=6mm of start] (input1)
+							{INPUT \\num\_1};
+							
+							\node[io, below=6mm of input1] (input2)
+							{INPUT \\num\_2};
+							
+							\node[decision, below=7mm of input2] (decision)
+							{num\_1 $>$ num\_2};
+							
+							\node[io, below=7mm of decision] (display2)
+							{DISPLAY\\num\_2};
+							
+							\node[io, right=22mm of decision] (display1)
+							{DISPLAY\\num\_1};
+							
+							% -------------------------------------------------
+							% Merge point
+							% -------------------------------------------------
+							
+							\node[
+							circle,
+							draw=black,
+							line width=0.8pt,
+							minimum size=8mm,
+							inner sep=0pt,
+							below=10mm of display2
+							] (merge) {};
+							
+							% -------------------------------------------------
+							% Stop
+							% -------------------------------------------------
+							
+							\node[startstop, below=8mm of merge] (stop)
+							{STOP};
+							
+							% -------------------------------------------------
+							% Connections
+							% -------------------------------------------------
+							
+							\draw[flow] (start) -- (input1);
+							\draw[flow] (input1) -- (input2);
+							\draw[flow] (input2) -- (decision);
+							
+							% False branch
+							\draw[flow]
+							(decision.south)
+							-- node[
+							right=1mm,
+							font=\scriptsize,
+							text=red!70!black
+							] {False}
+							(display2.north);
+							
+							% True branch
+							\draw[flow]
+							(decision.east)
+							-- ++(10mm,0)
+							node[
+							above=1mm,
+							font=\scriptsize,
+							text=green!40!black
+							] {True}
+							|- (display1.west);
+							
+							% Display num2 -> merge
+							\draw[flow]
+							(display2.south)
+							-- (merge.north);
+							
+							% Display num1 -> merge
+							\draw[flow]
+							(display1.south)
+							|- (merge.east);
+							
+							% Merge -> Stop
+							\draw[flow]
+							(merge.south)
+							-- (stop.north);
+							
+						\end{tikzpicture}	
+					};
+					
+				\end{tikzpicture}
+				
+			\end{column}
+			
+		\end{columns}
+		
+	\end{frame}
+	
+	\begin{frame}{Flowchart Examples (cont...)}
+		\vspace*{-0.4cm}
+		\begin{columns}[T,onlytextwidth]
+			
+			% =========================================================
+			% LEFT COLUMN -- INTRODUCTION
+			% =========================================================
+			
+			\begin{column}{0.70\textwidth}
+				
+				\begin{enumerate}\small
+					\item START
+					\item READ a number \texttt{`N'}
+					\item Initialize \texttt{M = 1}
+					\item Initialize \texttt{F = 1}
+					\item Compute \texttt{F = F * M}
+					\item If \texttt{M = N}\\ \qquad Print \texttt{F}
+					\item Otherwise\\ \qquad increment \texttt{M} by 1 and repeat Step 5
+					\item STOP
+				\end{enumerate}
+				
+			\end{column}
+			
+			
+			% =========================================================
+			% RIGHT COLUMN -- FLOWCHART
+			% =========================================================
+			
+			\begin{column}{0.30\textwidth}
+
+				\begin{tikzpicture}[remember picture, overlay, scale=0.70,]
+					
+					\node at ([xshift=45mm,yshift=-4mm]current page.center)
+					{
+						\begin{tikzpicture}[
+							scale=0.6,
+							transform shape,
+							>=Stealth,
+							every node/.style={
+								font=\small,
+								align=center
+							},
+							startstop/.style={
+								ellipse,
+								draw=black,
+								line width=0.8pt,
+								minimum width=22mm,
+								minimum height=8mm,
+								text=black
+							},
+							io/.style={
+								trapezium,
+								trapezium left angle=75,
+								trapezium right angle=105,
+								draw=black,
+								line width=0.8pt,
+								minimum width=24mm,
+								minimum height=9mm,
+								text=black
+							},
+							process/.style={
+								rectangle,
+								draw=black,
+								line width=0.8pt,
+								minimum width=24mm,
+								minimum height=9mm,
+								text=black
+							},
+							decision/.style={
+								diamond,
+								draw=black,
+								line width=0.8pt,
+								aspect=2,
+								minimum width=25mm,
+								minimum height=15mm,
+								inner sep=1pt,
+								text=black,
+								font=\scriptsize
+							},
+							flow/.style={
+								->,
+								line width=0.8pt
+							}
+							]
+							
+							% -------------------------------------------------
+							% Nodes
+							% -------------------------------------------------
+							
+							\node[startstop] (start) {START};
+							
+							\node[io, below=6mm of start] (readN)
+							{READ $\text{N}$};
+							
+							\node[process, below=6mm of readN] (mone)
+							{$\text{M}=1$};
+							
+							\node[process, below=6mm of mone] (fone)
+							{$\text{F}=1$};
+							
+							\node[process, below=6mm of fone] (multiply)
+							{$F=\text{F}\times \text{M}$};
+							
+							\node[decision, below=8mm of multiply] (decision)
+							{$\text{M}=\text{N}?$};
+							
+							\node[process, left=12mm of decision] (increment)
+							{$\text{M}=\text{M}+1$};
+							
+							\node[io, below=8mm of decision] (print)
+							{PRINT $\text{F}$};
+							
+							\node[startstop, below=6mm of print] (stop)
+							{END};
+							
+							
+							% -------------------------------------------------
+							% Main vertical flow
+							% -------------------------------------------------
+							
+							\draw[flow]
+							(start) -- (readN);
+							
+							\draw[flow]
+							(readN) -- (mone);
+							
+							\draw[flow]
+							(mone) -- (fone);
+							
+							\draw[flow]
+							(fone) -- (multiply);
+							
+							\draw[flow]
+							(multiply) -- (decision);
+							
+							
+							% -------------------------------------------------
+							% NO branch
+							% -------------------------------------------------
+							
+							\draw[flow]
+							(decision.west)
+							-- (increment.east);
+							
+							\node[
+							font=\scriptsize,
+							text=red!70!black
+							] at ($(decision.west)!0.5!(increment.east)+(0,4mm)$)
+							{NO};
+							
+							
+							% -------------------------------------------------
+							% Loop back to F = F * M
+							% -------------------------------------------------
+							
+							\draw[flow]
+							(increment.west)
+							-- ++(-10mm,0)
+							|- (multiply.west);
+							
+							
+							% -------------------------------------------------
+							% YES branch
+							% -------------------------------------------------
+							
+							\draw[flow]
+							(decision.south)
+							-- node[
+							right=1mm,
+							font=\scriptsize,
+							text=green!40!black
+							] {YES}
+							(print.north);
+							
+							
+							% -------------------------------------------------
+							% PRINT -> END
+							% -------------------------------------------------
+							
+							\draw[flow]
+							(print) -- (stop);
+							
+							
+						\end{tikzpicture}	
+					};
+					
+				\end{tikzpicture}
+				
+			\end{column}
+			
+		\end{columns}
+		
+	\end{frame}
+	
+	% =================================================================
+	\section{Anatomy of a C Program}
+	% =================================================================
+	\begin{frame}[fragile]{The Skeleton of Every C Program}
+		\begin{columns}[T]
+			\begin{column}{0.54\textwidth}
+				\begin{lstlisting}
+			#include <stdio.h>   /* 1: header */
+			
+			int main(void)       /* 2: start  */
+			{                    /* 3: body   */
+				/* your statements go here */
+				
+				return 0;        /* 4: exit   */
+			}
+				\end{lstlisting}
+			\end{column}
+			\begin{column}{0.46\textwidth}
+				\begin{enumerate}\small
+					\item \textbf{Preprocessor directive} --- \texttt{\#include} pulls in a library (here \texttt{stdio.h} for input/output).
+					\item \textbf{\texttt{main()}} --- execution always begins here; every program has exactly one.
+					\item \textbf{Body} --- the statements between \texttt{\{ \}}; each ends with a semicolon \texttt{;}
+					\item \textbf{\texttt{return 0;}} --- tells the OS the program finished successfully.
+				\end{enumerate}
+				\footnotesize Learn this shape first --- every program we write just fills in the body.
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}{The C Character Set and Tokens}
+		\begin{columns}[T]
+			\begin{column}{0.44\textwidth}
+				\begin{block}{Character set}
+					The symbols C understands:
+					\begin{itemize}\small
+						\item Letters \texttt{A--Z}, \texttt{a--z}
+						\item Digits \texttt{0--9}
+						\item Special symbols \texttt{+ - * / = \% ; , \dots}
+						\item Whitespace (space, tab, newline)
+					\end{itemize}
+				\end{block}
+			\end{column}
+			\begin{column}{0.56\textwidth}
+				\begin{block}{Tokens --- the smallest units}
+					Characters group into \textbf{tokens}:
+				\end{block}
+				\centering
+				\begin{tikzpicture}[every node/.style={font=\scriptsize, align=center},
+					tk/.style={rectangle, draw=black, rounded corners, fill=blue!8, minimum height=0.55cm, inner sep=2pt}]
+					\node[tk] (a){Keywords\\ \texttt{int}};
+					\node[tk, right=0.15cm of a] (b){Identifiers\\ \texttt{sum}};
+					\node[tk, right=0.15cm of b] (c){Constants\\ \texttt{42}};
+					\node[tk, below=0.2cm of a] (d){Strings\\ \texttt{"Hi"}};
+					\node[tk, right=0.15cm of d] (e){Operators\\ \texttt{+ =}};
+					\node[tk, right=0.15cm of e] (f){Symbols\\ \texttt{; \{ \}}};
+				\end{tikzpicture}
+				\vspace{0.15cm}
+				
+				\footnotesize A compiler first breaks your code into these tokens.
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}{Keywords: C's Reserved Words}
+		\begin{block}{What is a keyword?}
+			A \textbf{keyword} has a fixed, special meaning in C. There are \textbf{32} of them --- you
+			cannot use them as your own names. C is \textbf{case-sensitive}: \texttt{int} is a keyword, \texttt{INT} is not.
+		\end{block}
+		\renewcommand{\arraystretch}{1.3}
+		\centering\ttfamily\small
+		\begin{tabular}{@{}llllllll@{}}
+			auto & break & case & char & const & continue & default & do \\
+			double & else & enum & extern & float & for & goto & if \\
+			int & long & register & return & short & signed & sizeof & static \\
+			struct & switch & typedef & union & unsigned & void & volatile & while \\
+		\end{tabular}
+		
+		\vspace{0.25cm}
+		\normalfont\footnotesize The ones we use most as beginners: \texttt{int}, \texttt{float}, \texttt{char}, \texttt{if}, \texttt{else}, \texttt{for}, \texttt{while}, \texttt{return}.
+	\end{frame}
+	
+	\begin{frame}{Identifiers: Naming Your Variables}
+		\begin{block}{Identifier}
+			The \textbf{name} you give to a variable, function, or constant.
+		\end{block}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\textbf{Rules}
+				\begin{itemize}\small
+					\item Use letters, digits, and underscore \texttt{\_}.
+					\item Must \emph{start} with a letter or \texttt{\_} (not a digit).
+					\item No spaces and no special symbols.
+					\item Cannot be a keyword.
+					\item Case-sensitive: \texttt{age} $\neq$ \texttt{Age}.
+				\end{itemize}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\renewcommand{\arraystretch}{1.25}
+				\centering
+				\begin{tabular}{@{}ll@{}}
+					\toprule
+					\textbf{Valid} & \textbf{Invalid} \\
+					\midrule
+					\texttt{total}    & \texttt{2sum} (starts with digit) \\
+					\texttt{marks1}   & \texttt{my age} (has a space) \\
+					\texttt{\_count}  & \texttt{float} (keyword) \\
+					\texttt{avgScore} & \texttt{rate\%} (bad symbol) \\
+					\bottomrule
+				\end{tabular}
+				\vspace{0.15cm}
+				
+				\footnotesize Tip: choose \emph{meaningful} names like \texttt{total}, not \texttt{t}.
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	% =================================================================
+	\section{The C Standard Library}
+	% =================================================================
+	\begin{frame}{The C Standard Library}
+		\begin{block}{What is it?}
+			A ready-made collection of \textbf{functions} that come with C, so you don't reinvent the wheel.
+			You get access to them with \texttt{\#include <header.h>}.
+		\end{block}
+		\renewcommand{\arraystretch}{1.3}
+		\centering
+		\begin{tabular}{@{}llp{5.2cm}@{}}
+			\toprule
+			\textbf{Header} & \textbf{Purpose} & \textbf{Example functions} \\
+			\midrule
+			\texttt{stdio.h}  & input / output      & \texttt{printf}, \texttt{scanf}, \texttt{getchar} \\
+			\texttt{stdlib.h} & general utilities   & \texttt{malloc}, \texttt{rand}, \texttt{abs}, \texttt{atoi} \\
+			\texttt{math.h}   & mathematics         & \texttt{sqrt}, \texttt{pow}, \texttt{sin}, \texttt{ceil} \\
+			\texttt{string.h} & text handling       & \texttt{strlen}, \texttt{strcpy}, \texttt{strcmp} \\
+			\texttt{ctype.h}  & character tests     & \texttt{isdigit}, \texttt{toupper} \\
+			\bottomrule
+		\end{tabular}
+		\vspace{0.2cm}
+		\footnotesize\centering e.g.\ \texttt{\#include <math.h>} then \texttt{y = sqrt(25.0);} gives \texttt{y = 5.0}.
+	\end{frame}
+	
+	% =================================================================
+	\section{Data Types in C}
+	% =================================================================
+	\begin{frame}{Variables and Data Types}
+		\begin{block}{Variable}
+			A \textbf{named box} in memory that stores a value. You must declare its \emph{type} first:
+			\texttt{int age = 20;}
+		\end{block}
+		\centering
+		\begin{tikzpicture}[font=\small]
+			\node[process, minimum width=1.6cm, minimum height=1cm, fill=blue!10] (box) {20};
+			\node[above=0.05cm of box, font=\footnotesize] {\texttt{age} \; (type: int)};
+			\draw[flowarrow] ($(box.west)+(-1.5,0)$) node[left, font=\footnotesize]{\texttt{age = 20;}} -- (box.west);
+		\end{tikzpicture}
+		\vspace{0.2cm}
+		\begin{itemize}\small
+			\item The \textbf{type} decides what values fit and how much memory is used.
+			\item Choose the smallest type that comfortably holds your data.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{The Basic Data Types}
+		\renewcommand{\arraystretch}{1.35}
+		\centering
+		\begin{tabular}{@{}llll@{}}
+			\toprule
+			\textbf{Type} & \textbf{Stores} & \textbf{Typical size} & \textbf{Example} \\
+			\midrule
+			\texttt{int}    & whole numbers            & 4 bytes & \texttt{int n = 42;} \\
+			\texttt{float}  & real numbers (decimals)  & 4 bytes & \texttt{float g = 9.8f;} \\
+			\texttt{double} & real numbers (more precise) & 8 bytes & \texttt{double pi = 3.14159;} \\
+			\texttt{char}   & a single character       & 1 byte  & \texttt{char grade = 'A';} \\
+			\bottomrule
+		\end{tabular}
+		\vspace{0.3cm}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\begin{block}{Modifiers}
+					\small \texttt{short}, \texttt{long}, \texttt{unsigned} adjust range/size, e.g.\ \texttt{unsigned int} (no negatives), \texttt{long int} (bigger).
+				\end{block}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\begin{block}{A character is a small number}
+					\small \texttt{'A'} is stored as the integer \texttt{65} (its ASCII code).
+				\end{block}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}[fragile]{Size and Range of Each Variable}
+		\begin{block}{Every type occupies a fixed amount of memory}
+			The \textbf{size} (in bytes) decides the \textbf{range} of values a variable can hold. Sizes are typical for a modern computer.
+		\end{block}
+		\renewcommand{\arraystretch}{1.25}
+		\centering
+		\begin{tabular}{@{}lccll@{}}
+			\toprule
+			\textbf{Type} & \textbf{Size} & \textbf{Bits} & \textbf{Approx.\ range} & \textbf{Specifier} \\
+			\midrule
+			\texttt{char}   & 1 byte & 8  & $-128$ to $127$                & \texttt{\%c} \\
+			\texttt{int}    & 4 bytes & 32 & $-2.1\times10^{9}$ to $2.1\times10^{9}$ & \texttt{\%d} \\
+			\texttt{float}  & 4 bytes & 32 & $\sim$6--7 significant digits  & \texttt{\%f} \\
+			\texttt{double} & 8 bytes & 64 & $\sim$15 significant digits    & \texttt{\%lf} \\
+			\bottomrule
+		\end{tabular}
+		\vspace{0.2cm}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\begin{block}{Find the size yourself}
+					\small The \texttt{sizeof} operator returns a type's size in bytes:
+				\end{block}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\begin{lstlisting}
+					printf("%d", sizeof(int));
+					// prints 4
+				\end{lstlisting}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}[fragile]{Constants: Values That Never Change}
+		\begin{block}{Constant}
+			A value that is fixed and \textbf{cannot be changed} while the program runs (e.g.\ $\pi$, the number of days in a week). Using constants makes code safer and easier to read.
+		\end{block}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\textbf{Using the \texttt{const} keyword:}
+				\begin{lstlisting}
+					const float PI = 3.14159;
+					const int DAYS = 7;
+				\end{lstlisting}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\textbf{Using \texttt{\#define} (a macro):}
+				\begin{lstlisting}
+					#define MAX 100
+					#define PI 3.14159
+				\end{lstlisting}
+			\end{column}
+		\end{columns}
+		\vspace{0.1cm}
+		\begin{itemize}\small
+			\item \texttt{const} makes a \emph{typed} read-only variable; \texttt{\#define} does a plain text substitution before compiling.
+			\item By convention, constants are written in \texttt{UPPERCASE}. Trying to change one is an error.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}[fragile]{Variable Scope: Local vs.\ Global}
+		\begin{columns}[T]
+			\begin{column}{0.52\textwidth}
+				\begin{lstlisting}
+					int x = 5;        /* global */
+					
+					int main(void) {
+						int y = 10;   /* local  */
+						printf("%d %d", x, y);
+						return 0;
+					}
+				\end{lstlisting}
+			\end{column}
+			\begin{column}{0.48\textwidth}
+				\begin{block}{Scope = where a variable is visible}
+					\small
+					\begin{itemize}
+						\item \textbf{Local} --- declared \emph{inside} a function; usable only there.
+						\item \textbf{Global} --- declared \emph{outside} all functions; usable everywhere.
+					\end{itemize}
+				\end{block}
+				\footnotesize Prefer local variables --- they keep parts of the program independent and reduce accidental bugs.
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	% =================================================================
+	\section{Operators in C}
+	% =================================================================
+	\begin{frame}{Arithmetic Operators}
+		\renewcommand{\arraystretch}{1.35}
+		\centering
+		\begin{tabular}{@{}cllc@{}}
+			\toprule
+			\textbf{Operator} & \textbf{Meaning} & \textbf{Example} & \textbf{Result} \\
+			\midrule
+			\texttt{+} & addition        & \texttt{7 + 3}  & \texttt{10} \\
+			\texttt{-} & subtraction     & \texttt{7 - 3}  & \texttt{4}  \\
+			\texttt{*} & multiplication  & \texttt{7 * 3}  & \texttt{21} \\
+			\texttt{/} & division        & \texttt{7 / 3}  & \texttt{2}  (integer!) \\
+			\texttt{\%} & modulus (remainder) & \texttt{7 \% 3} & \texttt{1} \\
+			\bottomrule
+		\end{tabular}
+		\vspace{0.3cm}
+		\begin{block}{\textbf{Beginner trap:} integer division}
+			\small \texttt{7 / 3} gives \texttt{2}, \emph{not} 2.33, because both are integers.
+			Use \texttt{7.0 / 3} to get \texttt{2.333\ldots} \; The \texttt{\%} operator works only on integers.
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Operator Precedence (Order of Operations)}
+		\begin{columns}[T]
+			\begin{column}{0.52\textwidth}
+				\begin{itemize}
+					\item C follows maths-like precedence: \\[2pt]
+					\centering \texttt{*}\; \texttt{/}\; \texttt{\%} \; \textbf{before} \; \texttt{+}\; \texttt{-}
+					\item Same level $\rightarrow$ left to right.
+					\item Use \textbf{parentheses} to be explicit and clear.
+				\end{itemize}
+				\vspace{0.3cm}
+				\begin{block}{Example}
+					\small
+					\texttt{2 + 3 * 4} \; $\rightarrow$ \; \texttt{2 + 12} \; $\rightarrow$ \; \texttt{14} \\
+					\texttt{(2 + 3) * 4} \; $\rightarrow$ \; \texttt{20}
+				\end{block}
+			\end{column}
+			\begin{column}{0.48\textwidth}
+				\begin{block}{Assignment \& shortcuts}
+					\small
+					\begin{itemize}
+						\item \texttt{x = 5;} stores 5 in \texttt{x}.
+						\item \texttt{x += 2;} means \texttt{x = x + 2;}
+						\item \texttt{x++;} increases \texttt{x} by 1.
+						\item \texttt{x{-}{-};} decreases \texttt{x} by 1.
+					\end{itemize}
+				\end{block}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}{Relational and Logical Operators}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\begin{block}{Relational --- compare two values}
+					\small Result is \textbf{true (1)} or \textbf{false (0)}.
+				\end{block}
+				\renewcommand{\arraystretch}{1.25}
+				\centering
+				\begin{tabular}{@{}cll@{}}
+					\toprule
+					\textbf{Op} & \textbf{Meaning} & \textbf{Example} \\
+					\midrule
+					\texttt{==} & equal to        & \texttt{5 == 5} $\rightarrow$ 1 \\
+					\texttt{!=} & not equal       & \texttt{5 != 3} $\rightarrow$ 1 \\
+					\texttt{>}  & greater than    & \texttt{5 > 3}  $\rightarrow$ 1 \\
+					\texttt{<}  & less than       & \texttt{5 < 3}  $\rightarrow$ 0 \\
+					\texttt{>=} & greater/equal   & \texttt{5 >= 5} $\rightarrow$ 1 \\
+					\texttt{<=} & less/equal      & \texttt{4 <= 3} $\rightarrow$ 0 \\
+					\bottomrule
+				\end{tabular}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\begin{block}{Logical --- combine conditions}
+					\small Used to join or invert true/false tests.
+				\end{block}
+				\renewcommand{\arraystretch}{1.25}
+				\centering
+				\begin{tabular}{@{}cll@{}}
+					\toprule
+					\textbf{Op} & \textbf{Meaning} & \textbf{True when} \\
+					\midrule
+					\texttt{\&\&} & AND & both are true \\
+					\texttt{||}   & OR  & at least one is true \\
+					\texttt{!}    & NOT & flips true/false \\
+					\bottomrule
+				\end{tabular}
+				\vspace{0.2cm}
+				\footnotesize e.g.\ \texttt{(age >= 18 \&\& age < 60)} is true only for ages 18 to 59.
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}[fragile]{Assignment and Increment Operators}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\renewcommand{\arraystretch}{1.25}
+				\centering
+				\begin{tabular}{@{}cl@{}}
+					\toprule
+					\textbf{Operator} & \textbf{Meaning} \\
+					\midrule
+					\texttt{x = 5}  & assign 5 to x \\
+					\texttt{x += 2} & \texttt{x = x + 2} \\
+					\texttt{x -= 3} & \texttt{x = x - 3} \\
+					\texttt{x *= 4} & \texttt{x = x * 4} \\
+					\texttt{x /= 5} & \texttt{x = x / 5} \\
+					\bottomrule
+				\end{tabular}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\begin{lstlisting}
+					int x = 10;
+					x += 5;   // 15
+					x -= 3;   // 12
+					x *= 2;   // 24
+					x /= 4;   // 6
+				\end{lstlisting}
+				\centering\footnotesize Final value of \texttt{x} is \fbox{\texttt{6}}.
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}[fragile]{A Peek at Bitwise Operators}
+		\begin{block}{Working at the level of bits}
+			Bitwise operators act on the individual \textbf{0/1 bits} of an integer. They are common in
+			\emph{embedded systems} and \emph{hardware control} --- handy to recognise even as a beginner.
+		\end{block}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\begin{lstlisting}
+					int a = 5;   // 0101
+					int b = 3;   // 0011
+					
+					a & b;   // 0001 = 1  (AND)
+					a | b;   // 0111 = 7  (OR)
+					a ^ b;   // 0110 = 6  (XOR)
+					~a;      // flips all bits
+					a << 1;  // 1010 = 10 (x2)
+					a >> 1;  // 0010 = 2  (/2)
+				\end{lstlisting}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\begin{itemize}\small
+					\item \texttt{\&} AND --- 1 only if \emph{both} bits are 1.
+					\item \texttt{|} OR --- 1 if \emph{any} bit is 1.
+					\item \texttt{\textasciicircum} XOR --- 1 if the bits \emph{differ}.
+					\item \texttt{\textasciitilde} NOT --- flips every bit.
+					\item \texttt{<<} left shift --- multiplies by 2.
+					\item \texttt{>>} right shift --- divides by 2.
+				\end{itemize}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	% =================================================================
+	\section{Input and Output in C}
+	% =================================================================
+	\begin{frame}{Classification of I/O Functions}
+		\centering
+		\begin{tikzpicture}[every node/.style={font=\footnotesize},
+			hdr/.style={rectangle, draw=black, thick, rounded corners, minimum width=3.2cm, minimum height=0.7cm, align=center, font=\bfseries\footnotesize, fill=cAccent!20},
+			grp/.style={rectangle, draw=black, minimum width=3.4cm, align=center, fill=blue!6}]
+			\node[hdr] (io) {I / O Functions};
+			\node[hdr, below left=1.1cm and 0.6cm of io, fill=cGreen!18] (fmt) {Formatted};
+			\node[hdr, below right=1.1cm and 0.6cm of io, fill=cOrange!20] (unf) {Unformatted};
+			\draw[flowarrow] (io.south) -- ++(0,-0.35) -| (fmt.north);
+			\draw[flowarrow] (io.south) -- ++(0,-0.35) -| (unf.north);
+			\node[grp, below=0.4cm of fmt, text width=3.2cm] (fmtc)
+			{\textbf{Input:} \texttt{scanf}, \texttt{fscanf}\\ \textbf{Output:} \texttt{printf}, \texttt{fprintf}};
+			\node[grp, below=0.4cm of unf, text width=3.6cm] (unfc)
+			{\textbf{Input:} \texttt{getchar}, \texttt{gets}, \texttt{getch}\\ \textbf{Output:} \texttt{putchar}, \texttt{puts}};
+			\draw[flowarrow] (fmt) -- (fmtc);
+			\draw[flowarrow] (unf) -- (unfc);
+		\end{tikzpicture}
+		\vspace{0.2cm}
+		\begin{itemize}\small
+			\item \textbf{Formatted} functions use \emph{format specifiers} (\texttt{\%d}, \texttt{\%f}, \dots) to control layout --- our focus.
+			\item \textbf{Unformatted} functions read/write raw characters or strings without formatting.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}[fragile]{Output with \texttt{printf} --- Format Specifiers}
+		\renewcommand{\arraystretch}{1.3}
+		\centering
+		\begin{tabular}{@{}cll@{}}
+			\toprule
+			\textbf{Specifier} & \textbf{Used for} & \textbf{Example} \\
+			\midrule
+			\texttt{\%d} & integer               & \texttt{printf("\%d", 42);} $\rightarrow$ \texttt{42} \\
+			\texttt{\%f} & float / double        & \texttt{printf("\%f", 3.14);} $\rightarrow$ \texttt{3.140000} \\
+			\texttt{\%c} & single character      & \texttt{printf("\%c", 'A');} $\rightarrow$ \texttt{A} \\
+			\texttt{\%s} & string (text)         & \texttt{printf("\%s", "Hi");} $\rightarrow$ \texttt{Hi} \\
+			\bottomrule
+		\end{tabular}
+		\vspace{0.3cm}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\begin{block}{Width \& precision}
+					\small
+					\texttt{\%5d} --- at least 5 columns wide.\\
+					\texttt{\%.2f} --- 2 digits after the point.\\
+					\texttt{printf("\%.2f", 3.14159);} $\rightarrow$ \texttt{3.14}
+				\end{block}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\begin{block}{Escape sequences}
+					\small
+					\texttt{\textbackslash n} new line \quad \texttt{\textbackslash t} tab \\
+					\texttt{\textbackslash\textbackslash} backslash \quad \texttt{\textbackslash"} quote
+				\end{block}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}[fragile]{Input with \texttt{scanf}}
+		\begin{lstlisting}
+			int age;
+			printf("Enter your age: ");
+			scanf("%d", &age);          /* note the & (address of age) */
+			printf("Next year you will be %d\n", age + 1);
+		\end{lstlisting}
+		\begin{itemize}\small
+			\item \texttt{scanf} reads typed input and stores it in a variable.
+			\item \textbf{Crucial:} put an \texttt{\&} (``address of'') before the variable --- \texttt{\&age}.
+			\item The specifier must match the type: \texttt{\%d} int, \texttt{\%f} float, \texttt{\%c} char, \texttt{\%s} string.
+		\end{itemize}
+		\begin{block}{Reading several values}
+			\small \texttt{scanf("\%d \%f", \&n, \&x);} reads an integer then a float.
+		\end{block}
+		\centering\footnotesize\textbf{Sample run:}\; \fbox{\texttt{Enter your age: 20}} $\rightarrow$ \fbox{\texttt{Next year you will be 21}}
+	\end{frame}
+	
+	% =================================================================
+	\section{Control Structures}
+	% =================================================================
+	\begin{frame}[fragile]{Making Decisions: \texttt{if} / \texttt{if-else}}
+		\begin{columns}[T]
+			\begin{column}{0.55\textwidth}
+				\begin{lstlisting}
+					if (marks >= 40) {
+						printf("Pass\n");
+					} else {
+						printf("Fail\n");
+					}
+				\end{lstlisting}
+				\begin{itemize}\small
+					\item The condition in \texttt{( )} is either \textbf{true} or \textbf{false}.
+					\item Comparisons: \texttt{==}\; \texttt{!=}\; \texttt{<}\; \texttt{>}\; \texttt{<=}\; \texttt{>=}
+					\item \textbf{Trap:} \texttt{==} tests equality; \texttt{=} \emph{assigns}!
+				\end{itemize}
+			\end{column}
+			\begin{column}{0.45\textwidth}
+				\centering
+				\begin{tikzpicture}[font=\scriptsize, node distance=0.55cm]
+					\node[decision] (d){marks \\ $\geq 40$?};
+					\node[io, below left=0.9cm and 0.55cm of d, fill=cGreen!20] (p){Print ``Pass''};
+					\node[io, below right=0.9cm and 0.55cm of d, fill=cRed!18] (f){Print ``Fail''};
+					\node[startstop, below=2.2cm of d] (m){continue};
+					\draw[flowarrow] (d.west) -| node[near start,above,font=\tiny]{true} (p);
+					\draw[flowarrow] (d.east) -| node[near start,above,font=\tiny]{false} (f);
+					\draw[flowarrow] (p) |- (m);
+					\draw[flowarrow] (f) |- (m);
+				\end{tikzpicture}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}[fragile]{Choosing Among Many: \texttt{switch}}
+		\begin{columns}[T]
+			\begin{column}{0.55\textwidth}
+				\begin{lstlisting}
+					switch (choice) {
+						case 1:
+						printf("Add\n");
+						break;
+						case 2:
+						printf("Subtract\n");
+						break;
+						default:
+						printf("Invalid\n");
+					}
+				\end{lstlisting}
+			\end{column}
+			\begin{column}{0.45\textwidth}
+				\begin{itemize}\small
+					\item Compares one variable against several \texttt{case} values.
+					\item \texttt{break;} stops ``falling through'' to the next case --- \textbf{don't forget it}.
+					\item \texttt{default:} runs if nothing else matches.
+					\item Cleaner than a long \texttt{if--else if} chain.
+				\end{itemize}
+				\begin{block}{Note}
+					\small \texttt{case} labels must be constant integers or characters (e.g.\ \texttt{1}, \texttt{'A'}).
+				\end{block}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}[fragile]{Loops: \texttt{while} and \texttt{do--while}}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\textbf{\texttt{while}} --- test \emph{first}, may run 0 times:
+				\begin{lstlisting}
+					int i = 1;
+					while (i <= 5) {
+						printf("%d ", i);
+						i++;
+					}
+				\end{lstlisting}
+				\centering
+				\begin{tikzpicture}[font=\tiny, node distance=0.4cm]
+					\node[decision] (c){i<=5?};
+					\node[process, below=of c, fill=cOrange!14](b){print i; i++};
+					\node[startstop, right=0.9cm of c](x){exit};
+					\draw[flowarrow](c)-- node[left]{T}(b);
+					\draw[flowarrow](c)-- node[above]{F}(x);
+					\draw[flowarrow](b.east)--++(0.5,0)|-(c.east);
+				\end{tikzpicture}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\textbf{\texttt{do--while}} --- test \emph{after}, runs $\geq 1$ time:
+				\begin{lstlisting}
+					int i = 1;
+					do {
+						printf("%d ", i);
+						i++;
+					} while (i <= 5);
+				\end{lstlisting}
+				\centering
+				\begin{tikzpicture}[font=\tiny, node distance=0.4cm]
+					\node[process, fill=cOrange!14](b){print i; i++};
+					\node[decision, below=of b] (c){i<=5?};
+					\node[startstop, right=0.9cm of c](x){exit};
+					\draw[flowarrow](b)--(c);
+					\draw[flowarrow](c)-- node[above]{F}(x);
+					\draw[flowarrow](c.west)--++(-0.6,0)|-(b.west) node[near end,left]{T};
+				\end{tikzpicture}
+			\end{column}
+		\end{columns}
+		\vspace{0.1cm}
+		\centering\footnotesize Both print \fbox{\texttt{1 2 3 4 5}}. Use \texttt{do--while} when the body must run at least once.
+	\end{frame}
+	
+	\begin{frame}[fragile]{Loops: the \texttt{for} Loop}
+		\begin{columns}[T]
+			\begin{column}{0.55\textwidth}
+				\begin{lstlisting}
+					for (i = 1; i <= 5; i++) {
+						printf("%d ", i);
+					}
+				\end{lstlisting}
+				The three parts of a \texttt{for} loop:
+				\begin{enumerate}\small
+					\item \textbf{Init}: \texttt{i = 1} --- runs once at the start.
+					\item \textbf{Condition}: \texttt{i <= 5} --- checked before each pass.
+					\item \textbf{Update}: \texttt{i++} --- runs after each pass.
+				\end{enumerate}
+			\end{column}
+			\begin{column}{0.45\textwidth}
+				\centering
+				\begin{tikzpicture}[font=\scriptsize, node distance=0.5cm]
+					\node[startstop] (init){i = 1};
+					\node[decision, below=of init] (cond){i <= 5?};
+					\node[process, below=of cond, fill=cOrange!14] (body){print i};
+					\node[process, below=of body, fill=blue!10] (upd){i++};
+					\node[startstop, right=1.1cm of cond] (done){done};
+					\draw[flowarrow](init)--(cond);
+					\draw[flowarrow](cond)-- node[left,font=\tiny]{true}(body);
+					\draw[flowarrow](cond)-- node[above,font=\tiny]{false}(done);
+					\draw[flowarrow](body)--(upd);
+					\draw[flowarrow](upd.west)--++(-0.8,0)|-(cond.west);
+				\end{tikzpicture}
+			\end{column}
+		\end{columns}
+		\vspace{0.1cm}
+		\centering\footnotesize A \texttt{for} loop is a compact \texttt{while} loop --- best when you know the count in advance.
+	\end{frame}
+	
+	\begin{frame}[fragile]{\texttt{break} and \texttt{continue}}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\textbf{\texttt{break}} --- exit the loop immediately.
+				\begin{lstlisting}
+					for (i = 1; i <= 10; i++) {
+						if (i == 4) break;
+						printf("%d ", i);
+					}
+					// prints: 1 2 3
+				\end{lstlisting}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\textbf{\texttt{continue}} --- skip to the next iteration.
+				\begin{lstlisting}
+					for (i = 1; i <= 5; i++) {
+						if (i == 3) continue;
+						printf("%d ", i);
+					}
+					// prints: 1 2 4 5
+				\end{lstlisting}
+			\end{column}
+		\end{columns}
+		\vspace{0.2cm}
+		\begin{block}{Remember}
+			\small \texttt{break} \textbf{leaves} the loop; \texttt{continue} \textbf{jumps to the next round}. Both also appear inside \texttt{while}/\texttt{do--while}; \texttt{break} additionally ends a \texttt{switch} case.
+		\end{block}
+	\end{frame}
+	
+	% =================================================================
+	\section{Writing Your First C Programs}
+	% =================================================================
+	\begin{frame}[fragile]{Your First C Program: ``Hello, World!''}
+		\begin{lstlisting}
+			#include <stdio.h>          /* bring in input/output library */
+			
+			int main(void)              /* execution starts here */
+			{
+				printf("Hello, World!\n");   /* print a message */
+				return 0;                    /* 0 = success */
+			}
+		\end{lstlisting}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\begin{itemize}\small
+					\item We now know the skeleton, keywords, data types and I/O --- so we can write real programs.
+					\item \texttt{printf} prints text; \texttt{\textbackslash n} starts a new line.
+				\end{itemize}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\begin{itemize}\small
+					\item Every statement ends with a semicolon \texttt{;}
+					\item \texttt{return 0;} reports success to the OS.
+				\end{itemize}
+			\end{column}
+		\end{columns}
+		\vspace{0.1cm}
+		\centering\footnotesize\textbf{Output:}\; \fbox{\texttt{Hello, World!}}
+	\end{frame}
+	
+	\begin{frame}{Worked Example 1: Adding Two Numbers}
+		\centering
+		\resizebox{0.98\textwidth}{!}{%
+			\begin{tikzpicture}[
+				every node/.style={font=\small},
+				cl/.style={anchor=north west, font=\ttfamily\small, inner sep=1.5pt},
+				ann/.style={-{Stealth[length=2mm]}, thick}
+				]
+				% ---------- FLOWCHART (left) ----------
+				\node[startstop] (start) {START};
+				\node[io, below=0.4cm of start, fill=cOrange!20] (read) {READ a, b};
+				\node[process, below=0.4cm of read, minimum width=2.4cm, text width=2.4cm] (calc) {c = a + b};
+				\node[io, below=0.4cm of calc, fill=cGreen!20] (print) {PRINT c};
+				\node[startstop, below=0.4cm of print] (stop) {STOP};
+				\draw[flowarrow](start)--(read);
+				\draw[flowarrow](read)--(calc);
+				\draw[flowarrow](calc)--(print);
+				\draw[flowarrow](print)--(stop);
+				
+				% ---------- CODE (right) ----------
+				\node[cl] (l1) at (5,1.0) {\#include <stdio.h>};
+				\node[cl] (l2) at (l1.south west) {int main(void)};
+				\node[cl] (l3) at (l2.south west) {\{};
+				\node[cl, text=cAccent] (l4) at (l3.south west) {~~~int a, b, c;};
+				\node[cl] (l5) at (l4.south west) {~~~scanf("\%d \%d", \&a, \&b);};
+				\node[cl] (l6) at (l5.south west) {~~~c = a + b;};
+				\node[cl] (l7) at (l6.south west) {~~~printf("\%d", c);};
+				\node[cl] (l8) at (l7.south west) {~~~return 0;};
+				\node[cl] (l9) at (l8.south west) {\}};
+				\begin{scope}[on background layer]
+					\node[draw, thick, rounded corners, fill=magenta!8, fit=(l1)(l9), inner sep=6pt] (box) {};
+				\end{scope}
+				
+				% ---------- ANNOTATION ARROWS ----------
+				\draw[ann, blue]    (read.east)  -- (l5.west);
+				\draw[ann, cPurple] (calc.east)  -- (l6.west);
+				\draw[ann, cGreen]  (print.east) -- (l7.west);
+				
+				% ---------- CALLOUT ----------
+				\node[draw, fill=white, rounded corners, font=\footnotesize, anchor=west]
+				(vd) at ($(box.east |- l4)+(0.5,0)$) {Variable Declaration};
+				\draw[ann] (vd.west) -- (l4.east);
+		\end{tikzpicture}}
+		\vspace{0.1cm}
+		
+		\footnotesize Each flowchart step on the left maps to a coloured line of C code on the right.
+	\end{frame}
+	
+	\begin{frame}{Worked Example 2: Even or Odd (\texttt{if--else})}
+		\centering
+		\resizebox{0.86\textwidth}{!}{%
+			\begin{tikzpicture}[
+				every node/.style={font=\small},
+				cl/.style={anchor=north west, font=\ttfamily\small, inner sep=1.5pt},
+				ann/.style={-{Stealth[length=2mm]}, thick}
+				]
+				% ---------- FLOWCHART (left) ----------
+				\node[startstop] (start) {START};
+				\node[io, below=0.4cm of start, fill=cOrange!20] (read) {READ n};
+				\node[decision, below=0.5cm of read] (dec) {n \% 2 == 0?};
+				\node[process, below left=0.8cm and 0.1cm of dec, fill=cGreen!22] (even) {PRINT EVEN};
+				\node[process, below right=0.8cm and 0.1cm of dec, fill=cRed!20] (odd) {PRINT ODD};
+				\node[startstop, below=2.5cm of dec] (stop) {STOP};
+				\draw[flowarrow](start)--(read);
+				\draw[flowarrow](read)--(dec);
+				\draw[flowarrow](dec.west) -| node[near start, above, font=\scriptsize]{Yes} (even);
+				\draw[flowarrow](dec.east) -| node[near start, above, font=\scriptsize]{No} (odd);
+				\draw[flowarrow](even) |- (stop);
+				\draw[flowarrow](odd) |- (stop);
+				
+				% ---------- CODE (right) ----------
+				\node[cl] (l1) at (5.5,1.4) {\#include <stdio.h>};
+				\node[cl] (l2) at (l1.south west) {int main(void)};
+				\node[cl] (l3) at (l2.south west) {\{};
+				\node[cl, text=cAccent] (l4) at (l3.south west) {~~~int n;};
+				\node[cl] (l5) at (l4.south west) {~~~scanf("\%d", \&n);};
+				\node[cl] (l6) at (l5.south west) {~~~if (n \% 2 == 0)};
+				\node[cl, text=cGreen] (l7) at (l6.south west) {~~~~~~printf("EVEN");};
+				\node[cl] (l8) at (l7.south west) {~~~else};
+				\node[cl, text=cRed] (l9) at (l8.south west) {~~~~~~printf("ODD");};
+				\node[cl] (l10) at (l9.south west) {~~~return 0;};
+				\node[cl] (l11) at (l10.south west) {\}};
+				\begin{scope}[on background layer]
+					\node[draw, thick, rounded corners, fill=magenta!8, fit=(l1)(l11), inner sep=6pt] (box) {};
+				\end{scope}
+				
+				% ---------- ANNOTATION ARROWS ----------
+				\draw[ann, blue]    (read.east) -- (l5.west);
+				\draw[ann, cPurple] (dec.east)  to[out=0, in=180] (l6.west);
+				% ---------- CALLOUT ----------
+				\node[draw, fill=white, rounded corners, font=\footnotesize, anchor=west]
+				(vd) at ($(box.east |- l4)+(0.5,0)$) {Variable Declaration};
+				\draw[ann] (vd.west) -- (l4.east);
+		\end{tikzpicture}}
+		\vspace{0.05cm}
+		
+		\footnotesize The \textcolor{cGreen}{green} and \textcolor{cRed}{red} branches match the two \texttt{printf} lines. A number is even when \texttt{n \% 2} is \texttt{0}.
+	\end{frame}
+	
+	\begin{frame}[fragile]{Worked Example 3 --- Sum of 1 to N (a \texttt{for} loop)}
+		\begin{columns}[T]
+			\begin{column}{0.62\textwidth}
+				\begin{lstlisting}
+					#include <stdio.h>
+					
+					int main(void)
+					{
+						int n, i, sum = 0;
+						
+						printf("Enter N: ");
+						scanf("%d", &n);
+						
+						for (i = 1; i <= n; i++)
+						sum += i;   /* sum = sum + i */
+						
+						printf("Sum 1..%d = %d\n", n, sum);
+						return 0;
+					}
+				\end{lstlisting}
+			\end{column}
+			\begin{column}{0.38\textwidth}
+				\begin{block}{Trace for N = 5}
+					\small
+					\begin{tabular}{cc}
+						\texttt{i} & \texttt{sum} \\ \hline
+						1 & 1  \\
+						2 & 3  \\
+						3 & 6  \\
+						4 & 10 \\
+						5 & 15 \\
+					\end{tabular}
+				\end{block}
+				\centering\footnotesize Output:\\ \fbox{\texttt{Sum 1..5 = 15}}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}[fragile]{Worked Example 4 --- Simple Calculator (\texttt{switch})}
+		\begin{lstlisting}
+			#include <stdio.h>
+			int main(void) {
+				float a, b;  char op;
+				printf("Enter: a op b  (e.g. 6 * 7): ");
+				scanf("%f %c %f", &a, &op, &b);
+				
+				switch (op) {
+					case '+': printf("= %.2f\n", a + b); break;
+					case '-': printf("= %.2f\n", a - b); break;
+					case '*': printf("= %.2f\n", a * b); break;
+					case '/':
+					if (b != 0) printf("= %.2f\n", a / b);
+					else        printf("Cannot divide by zero!\n");
+					break;
+					default:  printf("Unknown operator\n");
+				}
+				return 0;
+			}
+		\end{lstlisting}
+	\end{frame}
+	
+	\begin{frame}{Summary \& What Comes Next}
+		\begin{columns}[T]
+			\begin{column}{0.5\textwidth}
+				\begin{block}{You now know}
+					\begin{itemize}\small
+						\item How a computer is organized and what an OS does.
+						\item Machine / assembly / high-level languages.
+						\item How a C program is written, compiled, and run.
+						\item Data types, operators, and control structures.
+						\item Formatted input/output with \texttt{printf}/\texttt{scanf}.
+					\end{itemize}
+				\end{block}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\begin{block}{Practice makes perfect}
+					\begin{itemize}\small
+						\item Type and run every example yourself.
+						\item Deliberately make errors --- read the messages.
+						\item Modify examples: change values, add features.
+					\end{itemize}
+				\end{block}
+				\begin{block}{Coming up}
+					\small Functions, arrays, strings, and pointers.
+				\end{block}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	%------------------------------------------------
+	\begin{frame}
+		\centering
+		\Huge Thank You
+		\vspace{0.5cm}
+		
+		\normalsize Questions?
+	\end{frame}
+	
+	%------------------------------------------------
 \end{document}
