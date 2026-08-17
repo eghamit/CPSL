@@ -237,20 +237,21 @@
 
 \begin{frame}{Evolution of Operating Systems: A Timeline}
     \centering
+    \resizebox{\textwidth}{!}{%
     \begin{tikzpicture}[every node/.style={font=\scriptsize}]
         % timeline
-        \draw[flowarrow, thick] (0,0) -- (12,0);
-        \foreach \x/\yr in {0.5/1950s, 3/1960s, 5.5/1970s, 8/1980s, 10.5/2000s+} {
+        \draw[flowarrow, thick] (0,0) -- (14.5,0);
+        \foreach \x/\yr in {1/1950s, 4/1960s, 7/1970s, 10/1980s, 13/2000s+} {
             \draw (\x,0.1) -- (\x,-0.1);
             \node[below] at (\x,-0.15) {\textbf{\yr}};
         }
-        % milestones (alternate up/down)
-        \node[process, fill=blue!8,   text width=2.2cm, above=0.6cm] at (0.5,0)  {\textbf{Batch}\\ jobs run one after another};
-        \node[process, fill=cGreen!12,text width=2.2cm, above=0.6cm] at (3,0)    {\textbf{Multi-\\programming} many jobs share CPU};
-        \node[process, fill=cOrange!15,text width=2.2cm, above=0.6cm] at (5.5,0) {\textbf{Time-\\sharing} many users at once};
-        \node[process, fill=cPurple!12,text width=2.2cm, above=0.6cm] at (8,0)   {\textbf{Personal / GUI} desktop icons \& mouse};
-        \node[process, fill=cRed!12,  text width=2.2cm, above=0.6cm] at (10.5,0) {\textbf{Mobile \& Cloud} phones, distributed};
-    \end{tikzpicture}
+        % milestones (spaced 3 units apart -> larger gap between boxes)
+        \node[process, fill=blue!8,   text width=2.2cm, above=0.6cm] at (1,0)  {\textbf{Batch}\\ jobs run one after another};
+        \node[process, fill=cGreen!12,text width=2.2cm, above=0.6cm] at (4,0)  {\textbf{Multi-\\programming} many jobs share CPU};
+        \node[process, fill=cOrange!15,text width=2.2cm, above=0.6cm] at (7,0) {\textbf{Time-\\sharing} many users at once};
+        \node[process, fill=cPurple!12,text width=2.2cm, above=0.6cm] at (10,0){\textbf{Personal / GUI} desktop icons \& mouse};
+        \node[process, fill=cRed!12,  text width=2.2cm, above=0.6cm] at (13,0) {\textbf{Mobile \& Cloud} phones, distributed};
+    \end{tikzpicture}}
     \vspace{0.4cm}
     \begin{itemize}\small
         \item Each stage made the computer \textbf{easier to use} and able to do \textbf{more at once}.
